@@ -1,8 +1,8 @@
 
 public class Course {
 
-	String name;
-	Component root;
+	private String name;
+	private Component root;
 	
 	public Course(String n) {
 		name = n;
@@ -24,6 +24,10 @@ public class Course {
 	public String toString() {
 		
 		return name + " " + root;
+	}
+	
+	public Component getRoot() {
+		return root;
 	}
 
 

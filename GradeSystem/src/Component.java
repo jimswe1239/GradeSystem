@@ -1,14 +1,15 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Component {
 
 	String name;
 	
-	Component parent; //if == null, then this is root
+	private Component parent; //if == null, then this is root
 	
-	HashMap<Component,Double> children;
+	public HashMap<Component,Double> children;
+	
+
 	
 	public Component(String n) {
 		name = n;
@@ -84,9 +85,17 @@ public class Component {
 		}
 	}
 	
+	public double getPercentage() {//returns the percentage of this component, according to it's parent
+		if(parent == null) {
+			return 100.0;
+		}
+		return parent.children.get(this);
+	}
 	
 	public String toString() {
-
+		
+		return name + " %" + getPercentage();
+		/***
 		if(children.isEmpty()) {
 			return "[" + name + "]";
 		}
@@ -97,6 +106,7 @@ public class Component {
 			}
 			return "[" + name + ret + "]";
 		}
+		***/
 	}
 
 	public Component deepCopy() {

@@ -44,10 +44,9 @@ public class SystemRunner {
 		System.out.println(s);
 		
 		s.totalTemplates.exportComponent(compOver);
-		Component template = s.totalTemplates.importComponent("Overall");//name of compOver
-		
 		active = s.selectCourse("Italian");
-		
+		Component template = s.totalTemplates.importComponent("Overall");//name of compOver
+
 		active.setTemplate(template);
 		
 		System.out.println(s);
