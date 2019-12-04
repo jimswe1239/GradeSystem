@@ -150,8 +150,8 @@ public class Component {
 	
 	public String toString() {
 		
-		//return name + " %" + getPercentage();
-
+		return name + " [" + getPercentage() + "%]";
+		/***for debugging
 		if(children.isEmpty()) {
 			return "[" + name + "]";
 		}
@@ -162,6 +162,7 @@ public class Component {
 			}
 			return "[" + name + ret + "]";
 		}
+		***/
 
 	}
 
