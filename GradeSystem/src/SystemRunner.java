@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class SystemRunner {
 
@@ -21,10 +21,10 @@ public class SystemRunner {
 		Component compHWblock = new Component("Participation");
 		Component compExamblock = new Component("Exams");
 		
-		compOver.addComponentAndScale(compHWblock,10);
+		compOver.addComponentAndScale(compHWblock,60);
 		compOver.addComponentAndScale(compExamblock,40);
 		
-		
+		/***
 		//Create test HW Component
 		Component compHWs = new Component("HW");
 		
@@ -32,18 +32,19 @@ public class SystemRunner {
 		Component compHW2 = new Component("HW2");
 		Component compHW3 = new Component("HW3");
 		
-		compHWs.addComponentAndScale(compHW1,40);
-		compHWs.addComponentAndScale(compHW2,60);
-		compHWs.addComponentAndScale(compHW3,10);
+		compHWs.addComponentAndScale(compHW1,40);//this 40 will be disregarded and changed to 100
+		compHWs.addComponentAndScale(compHW2,60);//this will work as intended
+		compHWs.addComponentAndScale(compHW3,10);//addComponentAnd Scale begins messing with things when the third component is added
 		
-		compOver.addComponentAndScale(compHWs, 40);
-		
+		compOver.addComponentAndScale(compHWs, 50);
+		***/
 		
 		active.setTemplate(compOver);
 		
 		System.out.println(s);
 		
 		s.totalTemplates.exportComponent(compOver);
+		/***
 		active = s.selectCourse("Italian");
 		Component template = s.totalTemplates.importComponent("Overall");//name of compOver
 
@@ -58,7 +59,26 @@ public class SystemRunner {
 		compHW3.changePercentageAndScale(10);
 		
 		System.out.println(s);
+		***/
 
+		active.addStudent(new Student("Seamus","Finnegan"),active.defaultSection());//a section must be specified, even if it is the defaultSection()
+		active.addStudent(new Student("Blarney","Stone"),active.defaultSection());
+		active.addStudent(new Student("Seamus","MacSuibhne"),active.defaultSection());
+		
+		active.addSection();
+		
+		ArrayList<Student> newStudentsToAdd = new ArrayList<Student>();
+		newStudentsToAdd.add(new Student("Kevin","MacAllister"));
+		newStudentsToAdd.add(new Student("Andre","Nozik"));
+		newStudentsToAdd.add(new Student("Pete","Eckhart"));
+		//If we can parse an input list of student names in plain text into an ArrayList<Student>, then we can make this function work for a large group of students
+		
+		Section selectedSection = active.getSections().get(1);//use the ui to actually select a section to add to
+		
+		active.addStudents(newStudentsToAdd,selectedSection);//a section must be specified, even if it is the defaultSection()
+		
+		
+		System.out.println(active.getClassList());
 	}
 
 }
