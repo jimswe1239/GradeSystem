@@ -1,21 +1,22 @@
+package Logic;
 
 public class Student implements Comparable<Student>{
 	private Name name;
 	/*** Uncomment if we want IDs
 	private String id;
 	
-	public Student(Name n,String i) {
+	public Logic.Student(Logic.Name n,String i) {
 		name = n;
 		id = i;
 	}
 	
-	public Student(String fName, String lName, String i) {
-		name = new Name(fName, lName);
+	public Logic.Student(String fName, String lName, String i) {
+		name = new Logic.Name(fName, lName);
 		id = i;
 	}
 	
-	public Student(String fName, String mName, String lName, String i) {
-		name = new Name(fName, mName, lName);
+	public Logic.Student(String fName, String mName, String lName, String i) {
+		name = new Logic.Name(fName, mName, lName);
 		id = i;
 	}
 	***/

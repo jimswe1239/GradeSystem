@@ -1,3 +1,4 @@
+package Logic;
 
 public class Score {
 	private String comment;

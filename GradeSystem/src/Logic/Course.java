@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +27,7 @@ public class Course {
 		addSection();
 	}
 	
-	public Course(String n, int numOfSections) {//the process for creating a Course must require the user to input number of sections
+	public Course(String n, int numOfSections) {//the process for creating a Logic.Course must require the user to input number of sections
 		name = n;
 		sections = new ArrayList<Section>();
 		currentSectionNumber = 1;
@@ -33,7 +35,7 @@ public class Course {
 		
 	}
 	
-	public Course(String n, Component c, int numOfSections) {//the process for creating a Course must require the user to input number of sections
+	public Course(String n, Component c, int numOfSections) {//the process for creating a Logic.Course must require the user to input number of sections
 		name = n;
 		root = c;
 		sections = new ArrayList<Section>();
@@ -53,7 +55,7 @@ public class Course {
 	}
 	
 	public void addSection() {
-		sections.add(new Section("Section "+currentSectionNumber));
+		sections.add(new Section("Logic.Section "+currentSectionNumber));
 		currentSectionNumber++;
 	}
 	

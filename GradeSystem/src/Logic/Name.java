@@ -1,3 +1,4 @@
+package Logic;
 
 public class Name {//the name of a student
 	private String fName;

@@ -1,3 +1,5 @@
+package Logic;
+
 import java.util.ArrayList;
 
 
@@ -15,7 +17,7 @@ public class SystemRunner {
 		
 		active = s.selectCourse("Spanish");
 		
-		//Create test Overall Component
+		//Create test Overall Logic.Component
 		Component compOver = new Component("Overall");
 		
 		Component compHWblock = new Component("Participation");
@@ -25,12 +27,12 @@ public class SystemRunner {
 		compOver.addComponentAndScale(compExamblock,40);
 		
 		/***
-		//Create test HW Component
-		Component compHWs = new Component("HW");
+		//Create test HW Logic.Component
+		Logic.Component compHWs = new Logic.Component("HW");
 		
-		Component compHW1 = new Component("HW1");
-		Component compHW2 = new Component("HW2");
-		Component compHW3 = new Component("HW3");
+		Logic.Component compHW1 = new Logic.Component("HW1");
+		Logic.Component compHW2 = new Logic.Component("HW2");
+		Logic.Component compHW3 = new Logic.Component("HW3");
 		
 		compHWs.addComponentAndScale(compHW1,40);//this 40 will be disregarded and changed to 100
 		compHWs.addComponentAndScale(compHW2,60);//this will work as intended
@@ -46,7 +48,7 @@ public class SystemRunner {
 		s.totalTemplates.exportComponent(compOver);
 		/***
 		active = s.selectCourse("Italian");
-		Component template = s.totalTemplates.importComponent("Overall");//name of compOver
+		Logic.Component template = s.totalTemplates.importComponent("Overall");//name of compOver
 
 		active.setTemplate(template);
 		
@@ -71,7 +73,7 @@ public class SystemRunner {
 		newStudentsToAdd.add(new Student("Kevin","MacAllister"));
 		newStudentsToAdd.add(new Student("Andre","Nozik"));
 		newStudentsToAdd.add(new Student("Pete","Eckhart"));
-		//If we can parse an input list of student names in plain text into an ArrayList<Student>, then we can make this function work for a large group of students
+		//If we can parse an input list of student names in plain text into an ArrayList<Logic.Student>, then we can make this function work for a large group of students
 		
 		Section selectedSection = active.getSections().get(1);//use the ui to actually select a section to add to
 		
