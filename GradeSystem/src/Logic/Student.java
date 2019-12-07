@@ -1,3 +1,4 @@
+package Logic;
 
 public class Student implements Comparable<Student>{
 	private Name name;

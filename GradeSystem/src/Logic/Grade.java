@@ -1,3 +1,4 @@
+package Logic;
 import java.util.HashMap;
 
 public class Grade {//grade is a score map!

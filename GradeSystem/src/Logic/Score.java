@@ -1,3 +1,4 @@
+package Logic;
 
 public class Score {
 	private double percentage;
