@@ -1,23 +1,32 @@
 package Logic;
+import java.util.HashMap;
 
-import java.util.Map;
-
-public class Grade {
-	private Map<Component, Score> scoreMap;
-	private Course course;
+public class Grade {//grade is a score map!
+	HashMap<Component,Score> sMap;
+	double endBonus;
 	
-	public Grade(Course course) {
-		scoreMap.put(course.getRoot(), new Score(100,100));
-		getNextLayerGrade();
+	public Grade() {
+		endBonus = 0;
+		sMap = new HashMap<Component,Score>();
 	}
-	public void getNextLayerGrade() {
-		for (Component c: scoreMap.keySet()) {
-			if(c.isLeaf()==false) {
-				for(Component key: c.children.keySet()) {
-					scoreMap.put(key, new Score(scoreMap.get(c).getPercentage()*c.children.get(key), 0));
-				}
-				scoreMap.remove(c);
-			}
+
+	public void putScore(Component component, Score score) {
+		sMap.put(component, score);
+	}
+	
+	public double getFinalScore(Component root) {
+		if(root.isLeaf()) {
+			return sMap.get(root).getPercentage();
 		}
+		double score = 0;
+		for(Component child : root.getChildren().keySet()) {
+			score += (root.getChildren().get(child))*.01 * getFinalScore(child);
+		}
+		return score + ((root.getParent() == null)?endBonus:0);//add the endBonus but only if root is the actual template root
 	}
+	
+	public void setEndBonus(double d) {
+		endBonus = d;
+	}
+
 }

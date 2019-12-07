@@ -1,4 +1,5 @@
-package Logic;//import java.util.ArrayList;
+package Logic;
+//import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Component {
@@ -35,15 +36,15 @@ public class Component {
 	}
 
 	/*** Constructors when children are already known
-	public Logic.Component(String n, ArrayList<Logic.Component> c, ArrayList<Double> per) {
+	public Component(String n, ArrayList<Component> c, ArrayList<Double> per) {
 		name = n;
-		children = new HashMap<Logic.Component,Double>();
+		children = new HashMap<Component,Double>();
 	}
 	
-	public Logic.Component(String n, Logic.Component p, ArrayList<Logic.Component> c, ArrayList<Double> per) {
+	public Component(String n, Component p, ArrayList<Component> c, ArrayList<Double> per) {
 		name = n;
 		parent = p;
-		children = new HashMap<Logic.Component,Double>();
+		children = new HashMap<Component,Double>();
 	}
 	***/
 
@@ -117,7 +118,7 @@ public class Component {
 	
 	public boolean changeAllChildren(HashMap<Component, Double> newChildren) {//when changing all children, you need to manually set the new values in the map
 		//This function CAN BE USED to add a new child, if the new children hashMap contains a new child, then it will be added here.
-		//So, when using this function, create a new Logic.Component, call the getChildren method, and then add the new component to those children, then use this function.
+		//So, when using this function, create a new Component, call the getChildren method, and then add the new component to those children, then use this function.
 		if(isXPercent(100,newChildren)) {
 			valid = true;
 			children = newChildren;
@@ -157,7 +158,7 @@ public class Component {
 		}
 		else {
 			String ret = "";
-			for (Logic.Component c : children.keySet()) {
+			for (Component c : children.keySet()) {
 				ret = ret + " " + children.get(c) + c;
 			}
 			return "[" + name + ret + "]";
@@ -180,6 +181,10 @@ public class Component {
 	
 	public boolean isLeaf(){
 		return children.isEmpty();
+	}
+
+	public Component getParent() {
+		return parent;
 	}
 
 

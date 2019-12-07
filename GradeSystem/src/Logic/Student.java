@@ -5,18 +5,18 @@ public class Student implements Comparable<Student>{
 	/*** Uncomment if we want IDs
 	private String id;
 	
-	public Logic.Student(Logic.Name n,String i) {
+	public Student(Name n,String i) {
 		name = n;
 		id = i;
 	}
 	
-	public Logic.Student(String fName, String lName, String i) {
-		name = new Logic.Name(fName, lName);
+	public Student(String fName, String lName, String i) {
+		name = new Name(fName, lName);
 		id = i;
 	}
 	
-	public Logic.Student(String fName, String mName, String lName, String i) {
-		name = new Logic.Name(fName, mName, lName);
+	public Student(String fName, String mName, String lName, String i) {
+		name = new Name(fName, mName, lName);
 		id = i;
 	}
 	***/

@@ -1,6 +1,6 @@
 package Logic;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,12 +10,14 @@ public class Course {
 	private Component root;
 	private ArrayList<Section> sections;//collections of students
 	private int currentSectionNumber;
+	private GradeMap gradeMap;
 	
 	public Course(String n) {//default number of sections = 1
 		name = n;
 		sections = new ArrayList<Section>();
 		currentSectionNumber = 1;
 		addSection();
+		gradeMap = new GradeMap();
 		
 	}
 	
@@ -25,22 +27,25 @@ public class Course {
 		sections = new ArrayList<Section>();
 		currentSectionNumber = 1;
 		addSection();
+		gradeMap = new GradeMap();
 	}
 	
-	public Course(String n, int numOfSections) {//the process for creating a Logic.Course must require the user to input number of sections
+	public Course(String n, int numOfSections) {//the process for creating a Course must require the user to input number of sections
 		name = n;
 		sections = new ArrayList<Section>();
 		currentSectionNumber = 1;
 		setSections(numOfSections);
+		gradeMap = new GradeMap();
 		
 	}
 	
-	public Course(String n, Component c, int numOfSections) {//the process for creating a Logic.Course must require the user to input number of sections
+	public Course(String n, Component c, int numOfSections) {//the process for creating a Course must require the user to input number of sections
 		name = n;
 		root = c;
 		sections = new ArrayList<Section>();
 		currentSectionNumber = 1;
 		setSections(numOfSections);
+		gradeMap = new GradeMap();
 	}
 
 	public void setTemplate(Component newRoot) {
@@ -55,7 +60,7 @@ public class Course {
 	}
 	
 	public void addSection() {
-		sections.add(new Section("Logic.Section "+currentSectionNumber));
+		sections.add(new Section("Section "+currentSectionNumber));
 		currentSectionNumber++;
 	}
 	
@@ -72,7 +77,7 @@ public class Course {
 	}
 	
 	public void addComponent(Component toAdd, Component whereToAdd) {//Use this to add a new component worth 0 percent, and then use changeAllChildren to adjust the new values based on user input
-		whereToAdd.addComponent(toAdd);
+		whereToAdd.addComponentAndScale(toAdd,0);
 	}
 	
 	public boolean changeAllChildren(Component toChangeChildrenOf, HashMap<Component, Double> newChildren) {
@@ -115,6 +120,71 @@ public class Course {
 	public Section defaultSection() {
 		return sections.get(0);
 	}
+	
+	public void putScore(Student student, Score score, Component component) {
+		gradeMap.putScore(student, score, component);
+	}
+	
+	public double getFinalScore(Student s, Component c) {//For either a specific assignment or the root
+		Grade grade = gradeMap.getGrade(s);
+		return grade.getFinalScore(c);
+	}
+	
+	public double getFinalAverage(Component c) {//For either a specific assignment or the root
+		double finalSum = 0;
+		for (Student s: this.getStudentList()) {
+			finalSum += getFinalScore(s,c);
+		}
+		return finalSum/(this.getStudentList().size());
+	}
+	
+	public double getFinalMedian(Component c) {//For either a specific assignment or the root
+		ArrayList<Double> percentageList = new ArrayList<Double>();
+		for (Student s: this.getStudentList()) {
+			percentageList.add(this.getFinalScore(s, c));
+		}
+		Collections.sort(percentageList);
+		int numOfScores = percentageList.size();
+		if (numOfScores % 2 == 1) {
+			return percentageList.get(numOfScores/2);
+		}
+		return (percentageList.get(numOfScores/2 -1) + percentageList.get((numOfScores/2))) /2;
+	}
+	
+	public double getFinalStandardDeviation(Component c) {//For either a specific assignment or the root
+		ArrayList<Double> percentageList = new ArrayList<Double>();
+		for (Student s: this.getStudentList()) {
+			percentageList.add(this.getFinalScore(s, c));
+		}
+		double mean = this.getFinalAverage(c);
+		double sumOfPowers = 0;
+		for (double i : percentageList) {
+			sumOfPowers+=Math.pow(((double) i - mean), 2);
+		}
+
+		return Math.sqrt(sumOfPowers/percentageList.size());
+}
+	
+	
+	
+	public void setEndBonus(double d) {//Add a curve value to all student's Final grades on root
+		//after calling this method, make sure that everything (each student's final score, and the final average, mean, and stddev) is recalculated and re-rendered
+		//this ONLY affects the root final score
+		Grade grade;
+		for (Student s: this.getStudentList()) {
+			grade = gradeMap.getGrade(s);
+			grade.setEndBonus(d);
+		}
+	}
+
+	public ArrayList<Student> getStudentList() {
+		ArrayList<Student> ret = new ArrayList<Student>();
+		for (Section s : sections) {
+			ret.addAll(s.getStudentList());
+		}
+		return ret;
+	}
+
 
 
 }
