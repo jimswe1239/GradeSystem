@@ -10,21 +10,32 @@ import Logic.Component;
 
 public class MainWindow extends GSFrame
 {
+    private Component rootNode = new Component("name");
+
     private GSTree tree;
     private JScrollPane treePanel;
     private GSTable table;
     private JScrollPane tablePanel;
+    private JPanel statisticPanel;
+    private JPanel curvePanel;
+    private JPanel buttonPanel;
+    private JButton okButton;
+    private JButton cancelButton;
     public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
+        rootNode = initTreeFroTest();
         initComponent();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
 
     private void initComponent()
     {
+        GridBagLayout globalGridBag = new GridBagLayout();
+        GridBagConstraints globalC = new GridBagConstraints();
+        JPanel panel = new JPanel(globalGridBag);
         //tree
         {
-            ComponentNode root = initTree(initTreeFroTest());
+            ComponentNode root = initTree(rootNode);
             tree = new GSTree(root);
             GSTreeCellRenderer re = new GSTreeCellRenderer();
             tree.setCellRenderer(re);
@@ -33,30 +44,84 @@ public class MainWindow extends GSFrame
 
             treePanel = new JScrollPane();
             treePanel.setViewportView(tree);
-            //treePanel.setBackground(new Color(28,40,51));
+
+            globalC.gridx = 0;
+            globalC.gridy = 0;
+            globalC.gridwidth = 1;
+            globalC.gridheight = 3;
+            globalGridBag.addLayoutComponent(treePanel, globalC);
+            panel.add(treePanel);
         }
 
         //table
         {
             table = new GSTable();
-
             tablePanel = new JScrollPane();
             tablePanel.setViewportView(table);
-            //tablePanel.setBackground(new Color());
+
+            globalC.gridx = 1;
+            globalC.gridy = 0;
+            globalC.weightx = 2;
+            globalC.gridheight = 1;
+            globalGridBag.addLayoutComponent(tablePanel, globalC);
+            panel.add(tablePanel);
         }
 
-        GridBagLayout globalGridBag = new GridBagLayout();
-        GridBagConstraints globalC = new GridBagConstraints();
-        JPanel panel = new JPanel(globalGridBag);
-        globalC.gridx = 0;
-        globalC.gridy = 0;
-        globalC.gridwidth = 1;
-        globalC.gridheight = 3;
-        globalGridBag.addLayoutComponent(treePanel, globalC);
+        //statistic
+        {
+            statisticPanel = new JPanel();
+            statisticPanel.setBackground(Color.red);
 
-        globalGridBag.addLayoutComponent(tablePanel, globalC);
-        panel.add(treePanel);
-        panel.add(tablePanel);
+            globalC.gridx = 1;
+            globalC.gridy = 1;
+            globalC.gridwidth = 1;
+            globalC.gridheight = 1;
+            globalGridBag.addLayoutComponent(statisticPanel, globalC);
+            panel.add(statisticPanel);
+        }
+
+        //curve
+        {
+            curvePanel = new JPanel();
+            curvePanel.setBackground(Color.blue);
+
+            globalC.gridx = 2;
+            globalC.gridy = 1;
+            globalC.gridwidth = 1;
+            globalC.gridheight = 1;
+            globalGridBag.addLayoutComponent(curvePanel, globalC);
+            panel.add(curvePanel);
+        }
+
+        //button
+        {
+            GridBagLayout buttonGridBag = new GridBagLayout();
+            GridBagConstraints buttonC = new GridBagConstraints();
+            buttonPanel = new JPanel(buttonGridBag);
+            {
+                okButton = new JButton("OK");
+                cancelButton = new JButton("Cancel");
+
+                buttonC.gridx = 0;
+                buttonC.gridy = 0;
+                buttonC.gridwidth = 1;
+                buttonC.gridheight = 1;
+                buttonGridBag.addLayoutComponent(okButton, buttonC);
+                buttonC.gridx = 1;
+                buttonC.gridy = 0;
+                buttonGridBag.addLayoutComponent(cancelButton, buttonC);
+                buttonPanel.add(okButton);
+                buttonPanel.add(cancelButton);
+            }
+
+            globalC.gridx = 1;
+            globalC.gridy = 2;
+            globalC.gridwidth = 2;
+            globalC.gridheight = 1;
+            globalGridBag.addLayoutComponent(buttonPanel, globalC);
+            panel.add(buttonPanel);
+        }
+
         setContentPane(panel);
         pack();
         setLocationRelativeTo(null);
