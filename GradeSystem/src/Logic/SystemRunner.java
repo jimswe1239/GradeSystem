@@ -1,5 +1,6 @@
 package Logic;
 
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -25,7 +26,38 @@ public class SystemRunner {
 		
 		compOver.addComponentAndScale(compHWblock,60);
 		compOver.addComponentAndScale(compExamblock,40);
-		
+		try
+		{
+			FileOutputStream fileOut =
+					new FileOutputStream("D:/employee.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(compOver);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in /tmp/employee.ser");
+		}catch(IOException i)
+		{
+			i.printStackTrace();
+		}
+		Component e = null;
+		try
+		{
+			FileInputStream fileIn = new FileInputStream("D:/employee.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			e = (Component) in.readObject();
+			in.close();
+			fileIn.close();
+		}catch(IOException i)
+		{
+			i.printStackTrace();
+			return;
+		}catch(ClassNotFoundException c)
+		{
+			System.out.println("Employee class not found");
+			c.printStackTrace();
+			return;
+		}
+
 		/***
 		//Create test HW Logic.Component
 		Logic.Component compHWs = new Logic.Component("HW");
@@ -40,7 +72,7 @@ public class SystemRunner {
 		
 		compOver.addComponentAndScale(compHWs, 50);
 		***/
-		
+
 		active.setTemplate(compOver);
 		
 		System.out.println(s);
