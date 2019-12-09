@@ -120,7 +120,9 @@ public class EntryWindow extends GSFrame
           {
         	MainWindow toOpen = null;
 			try {
-				toOpen = new MainWindow(new Course(titleField.getText(), (Component)templates.getSelectedItem()));
+				Course newCourse = new Course(titleField.getText(), (Component)templates.getSelectedItem());
+				school.addCourse(newCourse);
+				toOpen = new MainWindow(newCourse);
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
