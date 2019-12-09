@@ -1,33 +1,50 @@
 package Logic;
 
 public class Score {
-	private String comment;
-	private double percentageGot;
 	private double percentage;
+	private String comment;
 	
-	public Score(double p, double pg) {
-		this.percentage = p;
-		this.percentageGot = pg;
+	public Score() {
+		percentage = 0;
+		comment = "";
 	}
-	public String getComment() {
-		return comment;
+	
+	public Score(double p) {
+		percentage = p;
+		comment = "";
 	}
-	public void setComment(String comment) {
-		this.comment = comment;
+	
+	public Score(double p, String s) {
+		percentage = p;
+		comment = s;
 	}
-	public double getPercentageGot() {
-		return percentageGot;
+	
+	public void setPercentage(double p) {
+		percentage = p;
 	}
-	public void setPercentageGot(double percentageGot) {
-		this.percentageGot = percentageGot;
-	}
+	
 	public double getPercentage() {
 		return percentage;
 	}
-	public void setPercentage(double percentage) {
-		this.percentage = percentage;
+	
+	public void setComment(String s) {
+		comment = s;
 	}
-	public void ModifyComment(String c) {
-		this.comment = c;
+	
+	public void removeComment() {
+		comment = "";
 	}
+	
+	public String getComment() {
+		return comment;
+	}
+	
+	public boolean hasComment() {
+		return !comment.equals("");
+	}
+	
+	public String toString() {
+		return String.valueOf(percentage) + "%" + (this.hasComment()?"*":"");
+	}
+
 }

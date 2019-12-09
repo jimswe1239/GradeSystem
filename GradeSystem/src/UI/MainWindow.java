@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import Logic.Component;
+import Logic.Course;
 
 public class MainWindow extends GSFrame
 {
@@ -14,17 +15,17 @@ public class MainWindow extends GSFrame
     private JScrollPane treePanel;
     private GSTable table;
     private JScrollPane tablePanel;
-    public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
+    public MainWindow(Course course) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
-        initComponent();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        initComponent(course.getRoot());
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//we should ask if they want to save changes?
     }
 
-    private void initComponent()
+    private void initComponent(Component rootComponent)
     {
         //tree
         {
-            ComponentNode root = initTree(initTreeFroTest());
+            ComponentNode root = initTree(rootComponent);
             tree = new GSTree(root);
             GSTreeCellRenderer re = new GSTreeCellRenderer();
             tree.setCellRenderer(re);
@@ -78,7 +79,11 @@ public class MainWindow extends GSFrame
         return treeNode;
     }
 
-    private Component initTreeFroTest()
+    private static Course initCourseForTest() {
+    	return new Course("Test Course", initTreeForTest());
+    }
+    
+    private static Component initTreeForTest()
     {
         Component root = new Component("CS591");
         Component participation = new Component("Participation");
@@ -102,10 +107,10 @@ public class MainWindow extends GSFrame
         return root;
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        MainWindow test = new MainWindow();
-        test.setVisible(true);
-    }
+    //public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    //    MainWindow test = new MainWindow(initCourseForTest());
+    //    test.setVisible(true);
+    //}
 }
 
 class GSTree extends JTree
