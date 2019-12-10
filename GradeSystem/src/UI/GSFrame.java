@@ -11,7 +11,7 @@ public class GSFrame extends JFrame
 {
     public GSFrame() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
-        UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        //UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
     }
 }
 

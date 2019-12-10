@@ -34,6 +34,11 @@ public class Component {
 		}
 	}
 
+	public String getName()
+	{
+		return name;
+	}
+
 	/*** Constructors when children are already known
 	public Logic.Component(String n, ArrayList<Logic.Component> c, ArrayList<Double> per) {
 		name = n;
@@ -47,7 +52,8 @@ public class Component {
 	}
 	***/
 
-	
+
+
 	public void addComponentAndScale(Component toAdd, double per) {//adds component and scales the other children according to the value added
 		toAdd.setParent(this);
 		if(children.isEmpty()) {
