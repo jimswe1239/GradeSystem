@@ -1,6 +1,8 @@
 package Logic;
 import java.util.ArrayList;
+import UI.*;
 
+import javax.swing.*;
 
 public class SystemRunner {
 
@@ -118,6 +120,7 @@ public class SystemRunner {
 		***/
 
 		System.out.println(active.getClassList());
+
 		
 		for(Student s: active.getStudentList()) {
 			System.out.println(s.toString() + "  Final Score: " + active.getFinalScore(s, active.getRoot()));
@@ -126,6 +129,7 @@ public class SystemRunner {
 
 		System.out.println(active.getFinalMedian(active.getRoot()));
 		System.out.println(active.getFinalStandardDeviation(active.getRoot()));
+
 	}
 
 }
