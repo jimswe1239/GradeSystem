@@ -13,6 +13,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import Logic.Component;
+import Logic.Course;
 import UI.Table.*;
 import com.sun.xml.internal.bind.v2.TODO;
 
@@ -25,6 +26,7 @@ public class MainWindow extends GSFrame
     private JScrollPane treePanel;
     private GSTable table;
     private JScrollPane tablePanel;
+
     private JPanel statisticPanel;
     private JLabel averageLabel = new JLabel("Average");
     private JTextField averageField;
@@ -36,15 +38,15 @@ public class MainWindow extends GSFrame
     private JPanel buttonPanel;
     private JButton okButton;
     private JButton cancelButton;
-    public MainWindow() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
+    public MainWindow(Course course) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
-        rootNode = initTreeFroTest();
-        initComponent();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        rootNode = course.getRoot();
+        initComponent(rootNode);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//we should ask if they want to save changes?
         setMinimumSize(getSize());
     }
 
-    private void initComponent()
+    private void initComponent(Component rootComponent)
     {
         GridBagLayout globalGridBag = new GridBagLayout();
         GridBagConstraints globalC = new GridBagConstraints();
@@ -363,10 +365,10 @@ public class MainWindow extends GSFrame
         return root;
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        MainWindow test = new MainWindow();
-        test.setVisible(true);
-    }
+    //public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    //    MainWindow test = new MainWindow(initCourseForTest());
+    //    test.setVisible(true);
+    //}
 }
 
 class GSTree extends JTree

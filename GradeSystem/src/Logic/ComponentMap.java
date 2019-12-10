@@ -1,5 +1,5 @@
 package Logic;
-
+import java.util.Collection;
 import java.util.HashMap;
 
 public class ComponentMap {
@@ -18,4 +18,15 @@ public class ComponentMap {
 	public Component importComponent(String name) {
 		return cMap.get(name).deepCopy();
 	}
+	
+	public Component importComponent(Component c) {
+		return c.deepCopy();
+	}
+	
+
+	public Collection<Component> getComponents() {
+		return cMap.values();
+		
+	}
+
 }
