@@ -9,9 +9,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import Logic.*;
 import Logic.Component;
-import Logic.Course;
-import Logic.School;
 
 public class EntryWindow extends GSFrame
 {
@@ -209,7 +209,12 @@ public class EntryWindow extends GSFrame
         root.addComponentAndScale(exam, 40);
         
         Course course2 = new Course("CS112", root);
-        
+        course2.addStudent(new Student("Yf","F"), course2.defaultSection());
+        course2.addStudent(new Student("J", "S"), course2.defaultSection());
+        course2.addSection();
+        Section section = course2.getSections().get(1);
+        course2.addStudent(new Student("Rq", "Y"), section);
+        course2.addStudent(new Student("T", "C"), section);
         
         return course2;
     }
