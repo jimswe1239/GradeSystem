@@ -1,7 +1,7 @@
 package Logic;
 import java.util.HashMap;
 
-public class Grade {//grade is a score map!
+public class Grade implements java.io.Serializable{//grade is a score map!
 	HashMap<Component,Score> sMap;
 	double endBonus;
 	

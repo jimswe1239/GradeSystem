@@ -1,10 +1,11 @@
 package Logic;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
 
-public class School {
+public class School implements java.io.Serializable{
 	HashMap<String,Course> courses; //active courses stored here
 	HashMap<String,Course> pastCourses; //when courses are removed they go here
 	ComponentMap totalTemplates; //if a node with parent == null is exported, store here
@@ -61,5 +62,41 @@ public class School {
 	
 	public ComponentMap getTotalTemplates() {
 		return totalTemplates;
+	}
+	public School get(){
+		School s = null;
+		try
+		{
+			FileInputStream fileIn = new FileInputStream("D:/employee.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			s = (School) in.readObject();
+			in.close();
+			fileIn.close();
+			return s;
+		}catch(IOException i)
+		{
+			i.printStackTrace();
+			return s;
+		}catch(ClassNotFoundException c)
+		{
+			System.out.println("Employee class not found");
+			c.printStackTrace();
+			return s;
+		}
+	}
+	public void save(){
+		try
+		{
+			FileOutputStream fileOut =
+					new FileOutputStream("D:/employee.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in D:/employee.ser");
+		}catch(IOException i)
+		{
+			i.printStackTrace();
+		}
 	}
 }

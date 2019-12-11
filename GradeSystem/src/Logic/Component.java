@@ -2,7 +2,7 @@ package Logic;
 //import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Component {
+public class Component implements java.io.Serializable{
 
 	String name;
 	

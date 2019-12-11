@@ -1,6 +1,6 @@
 package Logic;
 
-public class Student implements Comparable<Student>{
+public class Student implements Comparable<Student> ,java.io.Serializable{
 	private Name name;
 	/*** Uncomment if we want IDs
 	private String id;

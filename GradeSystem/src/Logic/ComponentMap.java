@@ -2,7 +2,7 @@ package Logic;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class ComponentMap {
+public class ComponentMap implements java.io.Serializable{
 
 	private HashMap<String,Component> cMap;
 	
