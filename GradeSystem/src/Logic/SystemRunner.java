@@ -1,7 +1,7 @@
 package Logic;
 import java.util.ArrayList;
 import UI.*;
-
+import java.io.*;
 import javax.swing.*;
 
 public class SystemRunner {
@@ -129,6 +129,37 @@ public class SystemRunner {
 
 		System.out.println(active.getFinalMedian(active.getRoot()));
 		System.out.println(active.getFinalStandardDeviation(active.getRoot()));
+		try
+		{
+			FileOutputStream fileOut =
+					new FileOutputStream("D:/employee.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(school);
+			out.close();
+			fileOut.close();
+			System.out.printf("Serialized data is saved in /tmp/employee.ser");
+		}catch(IOException i)
+		{
+			i.printStackTrace();
+		}
+		School s = null;
+		try
+		{
+			FileInputStream fileIn = new FileInputStream("D:/employee.ser");
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			s = (School) in.readObject();
+			in.close();
+			fileIn.close();
+		}catch(IOException i)
+		{
+			i.printStackTrace();
+			return;
+		}catch(ClassNotFoundException c)
+		{
+			System.out.println("Employee class not found");
+			c.printStackTrace();
+			return;
+		}
 
 	}
 

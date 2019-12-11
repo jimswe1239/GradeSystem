@@ -1,6 +1,6 @@
 package Logic;
 
-public class Score {
+public class Score implements java.io.Serializable{
 	private double percentage;
 	private String comment;
 	

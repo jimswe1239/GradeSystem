@@ -1,7 +1,7 @@
 package Logic;
 import java.util.HashMap;
 
-public class GradeMap {
+public class GradeMap implements java.io.Serializable{
 	HashMap<Student,Grade> gMap;
 	
 	public GradeMap() {

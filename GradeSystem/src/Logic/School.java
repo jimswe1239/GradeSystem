@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 
 
-public class School {
+public class School implements java.io.Serializable{
 	HashMap<String,Course> courses; //active courses stored here
 	HashMap<String,Course> pastCourses; //when courses are removed they go here
 	ComponentMap totalTemplates; //if a node with parent == null is exported, store here

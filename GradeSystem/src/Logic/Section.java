@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
-public class Section {//A section is simply a collection of students that are group together for organizational purposes
+public class Section implements java.io.Serializable{//A section is simply a collection of students that are group together for organizational purposes
 	public ArrayList<Student> students; //This is a priorityQueue meaning that it will always be in alphabetical order!
 	public String name;
 	

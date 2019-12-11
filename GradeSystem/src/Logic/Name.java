@@ -1,6 +1,6 @@
 package Logic;
 
-public class Name {//the name of a student
+public class Name implements java.io.Serializable{//the name of a student
 	private String fName;
 	private String mName;
 	private String lName;

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-public class Course implements Comparable<Course> {
+public class Course implements Comparable<Course> ,java.io.Serializable{
 
 	private String name;
 	private Component root;
