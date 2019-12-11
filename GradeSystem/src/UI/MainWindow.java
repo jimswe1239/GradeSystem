@@ -12,8 +12,9 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+
+import Logic.*;
 import Logic.Component;
-import Logic.Course;
 import UI.Table.*;
 import com.sun.xml.internal.bind.v2.TODO;
 
@@ -26,27 +27,30 @@ public class MainWindow extends GSFrame
     private JScrollPane treePanel;
     private GSTable table;
     private JScrollPane tablePanel;
+    private Course course;
 
     private JPanel statisticPanel;
     private JLabel averageLabel = new JLabel("Average");
     private JTextField averageField;
     private JLabel medianLabel = new JLabel("Median");
     private JTextField medianField;
-    private JLabel deviationLabel = new JLabel("Deviation");
-    private JTextField deviationField;
+    private JLabel standardDeviationLabel = new JLabel("Standard Deviation");
+    private JTextField standardDeviationField;
     private JPanel curvePanel;
     private JPanel buttonPanel;
     private JButton okButton;
     private JButton cancelButton;
     public MainWindow(Course course) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
+        this.course = course;
         rootNode = course.getRoot();
-        initComponent(rootNode);
+        initComponent();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//we should ask if they want to save changes?
         setMinimumSize(getSize());
+        treePanel.setMinimumSize(treePanel.getSize());
     }
 
-    private void initComponent(Component rootComponent)
+    private void initComponent()
     {
         GridBagLayout globalGridBag = new GridBagLayout();
         GridBagConstraints globalC = new GridBagConstraints();
@@ -57,7 +61,7 @@ public class MainWindow extends GSFrame
             tree = new GSTree(treeRoot);
             GSTreeCellRenderer re = new GSTreeCellRenderer();
             tree.setCellRenderer(re);
-            tree.setBackground(new Color(36, 41, 46));
+            //tree.setBackground(new Color(36, 41, 46));
             tree.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
             tree.addTreeSelectionListener(new TreeSelectionListener()
             {
@@ -77,6 +81,10 @@ public class MainWindow extends GSFrame
             });
 
             treePanel = new JScrollPane();
+//            Dimension d = treePanel.getSize();
+//            System.out.println("width: " + d.width);
+//            System.out.println("height: " + d.height);
+//            treePanel.setMinimumSize(d);
             treePanel.setViewportView(tree);
 
             globalC.gridx = 0;
@@ -98,7 +106,7 @@ public class MainWindow extends GSFrame
             globalC.gridx = 1;
             globalC.gridy = 0;
             globalC.gridwidth = 2;
-            globalC.weightx = 1.0;
+            globalC.weightx = 0.7;
             globalC.weighty = 0.5;
             globalC.gridheight = 1;
             globalC.fill = GridBagConstraints.BOTH;
@@ -129,6 +137,7 @@ public class MainWindow extends GSFrame
                     statisticPanel.add(averageLabel);
 
                     averageField = new JTextField(5);
+                    averageField.setEditable(false);
                     statisticC.gridx = 1;
                     statisticC.gridy = 0;
                     statisticGridBag.addLayoutComponent(averageField, statisticC);
@@ -143,6 +152,7 @@ public class MainWindow extends GSFrame
                     statisticPanel.add(medianLabel);
 
                     medianField = new JTextField(5);
+                    medianField.setEditable(false);
                     statisticC.gridx = 3;
                     statisticC.gridy = 0;
                     statisticGridBag.addLayoutComponent(medianField, statisticC);
@@ -153,16 +163,19 @@ public class MainWindow extends GSFrame
                 {
                     statisticC.gridx = 0;
                     statisticC.gridy = 1;
-                    statisticGridBag.addLayoutComponent(deviationLabel, statisticC);
-                    statisticPanel.add(deviationLabel);
+                    statisticGridBag.addLayoutComponent(standardDeviationLabel, statisticC);
+                    statisticPanel.add(standardDeviationLabel);
 
-                    deviationField = new JTextField(5);
+                    standardDeviationField = new JTextField(5);
+                    standardDeviationField.setEditable(false);
                     statisticC.gridx = 1;
                     statisticC.gridy = 1;
-                    statisticGridBag.addLayoutComponent(deviationField, statisticC);
-                    statisticPanel.add(deviationField);
+                    statisticGridBag.addLayoutComponent(standardDeviationField, statisticC);
+                    statisticPanel.add(standardDeviationField);
                 }
             }
+
+            refreshStatisticInfo(treeRoot);
 
             globalC.gridx = 1;
             globalC.gridy = 1;
@@ -243,26 +256,25 @@ public class MainWindow extends GSFrame
     private GSTable refreshTable(GSComponentNode node)
     {
         String[] headerString = refreshTableHeader(node);
-//        String[] headerString = new String[] {"section", "student", "participation", "class design", "correct", "comment", "hw2", "hw3", "exam1", "exam2", "total"};
-        String[][] content = new String[][]{{"section", "student", "participation", "class design", "correct", "comment", "hw2", "hw3", "exam1", "exam2", "total"}};
 
-        TableContent tableContent = new TableContent();
-        {
-            tableContent.append("A1", 1, 3);
-            tableContent.append("Stu1");
-            tableContent.println();
-            tableContent.append("Stu2");
-            tableContent.println();
-            tableContent.append("Stu3");
-            tableContent.println();
-            tableContent.append("A2", 1, 3);
-            tableContent.append("Stu4");
-            tableContent.println();
-            tableContent.append("Stu5");
-            tableContent.println();
-            tableContent.append("Stu6");
-            tableContent.println();
-        }
+        TableContent tableContent = refreshTableContent(node);
+//        TableContent tableContent = new TableContent();
+//        {
+//            tableContent.append("A1", 1, 3);
+//            tableContent.append("Stu1");
+//            tableContent.println();
+//            tableContent.append("Stu2");
+//            tableContent.println();
+//            tableContent.append("Stu3");
+//            tableContent.println();
+//            tableContent.append("A2", 1, 3);
+//            tableContent.append("Stu4");
+//            tableContent.println();
+//            tableContent.append("Stu5");
+//            tableContent.println();
+//            tableContent.append("Stu6");
+//            tableContent.println();
+//        }
 
         GSTable table = tableContent.createTable(headerString);
 
@@ -317,6 +329,81 @@ public class MainWindow extends GSFrame
         headerList.add("total");
         String[] headerString = headerList.toArray(new String[headerList.size()]);
         return headerString;
+    }
+
+    private TableContent refreshTableContent(GSComponentNode node)
+    {
+        TableContent tableContent = new TableContent();
+
+        ArrayList<Section> sections =  course.getSections();
+        for(Section section : sections) // traverse all sections
+        {
+            ArrayList<Student> students = section.getStudentList();
+            int studentNum = section.getStudentList().size();
+            tableContent.append(section.name, 1, studentNum);   // add the section row header
+            for(Student student : students) // traverse all students in this section
+            {
+                tableContent.append(student.toString());    // student's name
+                //TODO: load table content
+
+                Enumeration items = node.depthFirstEnumeration();
+                while(items.hasMoreElements())
+                {
+                    GSComponentNode next = (GSComponentNode)items.nextElement();
+                    if(next.isLeaf())
+                    {
+                        Component component = (Component) next.getUserObject();
+                        if(course.getGradeOfOneStudent(student, component)==-1)
+                        {
+                            tableContent.append("");
+                        }
+                        else
+                            {
+                            tableContent.append(course.getGradeOfOneStudent(student, component));
+                        }
+                    }
+                }
+
+                Grade grade = course.getGradeMap().getGrade(student);
+
+                if(grade==null)
+                {
+                    tableContent.append("");
+                }
+                else
+                {
+                    double finalScore = grade.getFinalScore((Component) node.getUserObject());
+                    tableContent.append(finalScore);
+                }
+
+                tableContent.println();
+            }
+        }
+
+        return tableContent;
+    }
+
+    private void refreshStatisticInfo(GSComponentNode node)
+    {
+        double average = 0;
+        double median = 0;
+        double standardDeviation = 0;
+        try
+        {
+            average = course.getFinalAverage((Component) node.getUserObject());
+            median = course.getFinalMedian((Component) node.getUserObject());
+            standardDeviation = course.getFinalStandardDeviation((Component) node.getUserObject());
+        }
+        catch (NullPointerException e)
+        {
+            average = 0;
+            median = 0;
+            standardDeviation = 0;
+        }
+
+        averageField.setText(String.valueOf(average));
+        medianField.setText(String.valueOf(median));
+        standardDeviationField.setText(String.valueOf(standardDeviation));
     }
 
     private ColumnGroup getColumnGroup(GSComponentNode node, TableColumnModel cm, int[] columnIndex)
@@ -381,7 +468,7 @@ class GSTree extends JTree
 
     private void setFeatures()
     {
-        setBackground(new Color(28,40,51));
+        //setBackground(new Color(28,40,51));
         putClientProperty("lineStyle","None");
     }
 }
@@ -410,9 +497,8 @@ class GSTreeCellRenderer extends DefaultTreeCellRenderer
 
     private void setFeatures()
     {
-        setBackground(new Color(28,40,51));
-        setBackgroundNonSelectionColor(new Color(28,40,51));
-        setTextNonSelectionColor(Color.WHITE);
+        //setBackgroundNonSelectionColor(new Color(28,40,51));
+        //setTextNonSelectionColor(Color.WHITE);
         setOpenIcon(null);
     }
 }

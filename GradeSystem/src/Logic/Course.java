@@ -89,13 +89,36 @@ public class Course implements Comparable<Course> {
 		
 		return name + " " + root;
 	}
-	
+
+	public GradeMap getGradeMap()
+	{
+		return gradeMap;
+	}
+
+	public double getGradeOfOneStudent(Student student, Component component)
+	{
+		Grade grade = gradeMap.gMap.get(student);
+		if(grade == null)
+		{
+			return -1;
+		}
+		Score score = grade.sMap.get(component);
+		if(score == null)
+		{
+			return -1;
+		}
+		double percentage = score.getPercentage();
+
+		return percentage;
+	}
+
 	public Component getRoot() {
 		return root;
 	}
 	
 	public void addStudent(Student s, Section sectionToAddTo) {//students must always be added to a section
 		sectionToAddTo.addStudent(s);
+
 	}
 	
 	public void addStudents(List<Student> studentsToAdd, Section sectionToAddTo) {
