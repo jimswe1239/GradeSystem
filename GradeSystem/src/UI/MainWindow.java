@@ -52,7 +52,7 @@ public class MainWindow extends GSFrame
     {
         this.school = school;
         this.course = course;
-        this.gradeMapCache = course.getGradeMap().deepCopy();
+        //this.gradeMapCache = course.getGradeMap().deepCopy();
         rootNode = course.getRoot();
         initComponent();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//we should ask if they want to save changes?
@@ -225,10 +225,11 @@ public class MainWindow extends GSFrame
                         double curveNumber = Double.valueOf(curveField.getText());
                         //TODO: call curve function here
                         course.setEndBonus(curveNumber);
-                        table = refreshTable(curNode);
-                        refreshStatisticInfo(curNode);
-                        tablePanel.getViewport().add(table, null);
-                        tablePanel.revalidate();
+//                        table = refreshTable(curNode);
+//                        refreshStatisticInfo(curNode);
+//                        tablePanel.getViewport().add(table, null);
+//                        tablePanel.revalidate();
+                        refreshTableNStatistic();
                     }
                 });
 
@@ -275,7 +276,7 @@ public class MainWindow extends GSFrame
                     public void actionPerformed(ActionEvent e)
                     {
                         school.save();
-                        school.get();
+                        refreshTableNStatistic();
                     }
                 });
                 cancelButton = new JButton("Cancel");
@@ -322,6 +323,14 @@ public class MainWindow extends GSFrame
         return treeNode;
     }
 
+    public void refreshTableNStatistic()
+    {
+        table = refreshTable(curNode);
+        refreshStatisticInfo(curNode);
+        tablePanel.getViewport().add(table, null);
+        tablePanel.revalidate();
+    }
+
     private GSTable refreshTable(GSComponentNode node)
     {
         String[] headerString = refreshTableHeader(node);
@@ -348,6 +357,7 @@ public class MainWindow extends GSFrame
         GSTable table = tableContent.createTable(headerString);
         table.setNode(node);
         table.setCourse(course);
+        table.setMainWindow(this);
 
         TableColumnModel cm = table.getColumnModel();
         ColumnGroup no = new ColumnGroup(" ");
