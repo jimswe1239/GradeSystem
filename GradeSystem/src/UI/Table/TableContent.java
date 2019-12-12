@@ -112,7 +112,7 @@ public class TableContent
 			}
 			row++;
 		}
-		return new DefaultTableModel(data,columnHeaders);
+		return new GSTableModel(data,columnHeaders);
 	}
 	
 	/**

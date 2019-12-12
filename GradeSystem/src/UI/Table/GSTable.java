@@ -1,19 +1,41 @@
 package UI.Table;
 
+import Logic.Course;
+import Logic.Score;
+import Logic.Section;
+import Logic.Student;
+import UI.GSComponentNode;
+
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
+import javax.xml.ws.handler.LogicalHandler;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.Enumeration;
 
 public class GSTable extends JTable
 {
     private GridSplit gridSplit;
+    private Course course;
+    private GSComponentNode node;
 
     public GSTable(GridSplit gridSplit, TableModel tbl)
     {
         super(tbl);
         this.gridSplit = gridSplit;
         setUI(new DSTableUI());
+    }
+
+    public void setCourse(Course course)
+    {
+        this.course = course;
+    }
+
+    public void setNode(GSComponentNode node)
+    {
+        this.node = node;
     }
 
     public GridSplit getGridSplit() {
@@ -48,15 +70,98 @@ public class GSTable extends JTable
     }
 
     @Override
-    public boolean isCellEditable(int row, int col) {
-        if(col==0)
+    public boolean isCellEditable(int row, int col)
+    {
+        if(col < 2)
         {
             return false;
         }
-        else
+
+        JTextField tf = new JTextField();
+        tf.addKeyListener(new KeyAdapter()
         {
-            return true;
+            public void keyReleased(KeyEvent e)
+            {
+                event();
+            };
+        });
+        tf.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        tf.setSelectionStart(0);
+        tf.setSelectionEnd(tf.getText().length());
+        getColumnModel().getColumn(col).setCellEditor(new DefaultCellEditor(tf));
+        return true;
+    }
+
+    private void event()
+    {
+        int row = getEditingRow();
+        int column = getEditingColumn();
+
+        DefaultCellEditor obj = (DefaultCellEditor) (getColumnModel().getColumn(column).getCellEditor());
+        if (obj != null)
+        {
+            JComponent com = (JComponent) obj.getComponent();
+            double value = 0;
+            if (com instanceof JTextField)
+            {
+                String text = ((JTextField) com).getText();
+                value = Double.valueOf(text);
+            }
+//            System.out.println("row:" + row + ", column:" + column + ", value:" + value);
+            Student student = getStudent(row);
+//            System.out.println(student);
+            Logic.Component component = getComponent(column, node);
+//            System.out.println(component.getName());
+            course.getGradeMap().putScore(student, new Score(value), component);
         }
+    }
+
+    public Student getStudent(int row)
+    {
+        Student student = null;
+        for(Section section : course.getSections())
+        {
+            int studentNum = section.getStudentList().size();
+            if(studentNum < (row+1))
+            {
+                row -= studentNum;
+                continue;
+            }
+            else
+            {
+                student = section.getStudentList().get(row);
+                return student;
+            }
+        }
+
+        return student;
+    }
+
+    public Logic.Component getComponent(int column, GSComponentNode node)
+    {
+        column -= 2;
+        Logic.Component component = null;
+
+        Enumeration children = node.depthFirstEnumeration();
+
+        while(children.hasMoreElements())
+        {
+            GSComponentNode next = (GSComponentNode) children.nextElement();
+            if(next.isLeaf())
+            {
+                if(column != 0)
+                {
+                    column--;
+                }
+                else
+                {
+                    component = (Logic.Component) next.getUserObject();
+                    return component;
+                }
+            }
+        }
+
+        return component;
     }
 
     @Override

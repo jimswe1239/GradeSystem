@@ -20,4 +20,10 @@ public class Name implements java.io.Serializable{//the name of a student
 	public String toString() {
 		return lName + ", " +fName + (mName.equals("")?"":(" "+mName.charAt(0)+ "."));
 	}
+
+	public Name deepCopy()
+	{
+		Name copy = new Name(fName, mName, lName);
+		return copy;
+	}
 }

@@ -118,7 +118,7 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 	
 	public void addStudent(Student s, Section sectionToAddTo) {//students must always be added to a section
 		sectionToAddTo.addStudent(s);
-
+		this.gradeMap.gMap.put(s, new Grade());
 	}
 	
 	public void addStudents(List<Student> studentsToAdd, Section sectionToAddTo) {
@@ -188,14 +188,14 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 
 		return Math.sqrt(sumOfPowers/percentageList.size());
 }
-	
-	
-	
-	public void setEndBonus(double d) {//Add a curve value to all student's Final grades on root
+
+	public void setEndBonus(double d) {
+		//Add a curve value to all student's Final grades on root
 		//after calling this method, make sure that everything (each student's final score, and the final average, mean, and stddev) is recalculated and re-rendered
 		//this ONLY affects the root final score
 		Grade grade;
-		for (Student s: this.getStudentList()) {
+		for (Student s: this.getStudentList())
+		{
 			grade = gradeMap.getGrade(s);
 			grade.setEndBonus(d);
 		}
@@ -224,7 +224,9 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		return (new Integer(this.getDateCreated())).compareTo(new Integer(other.getDateCreated()));
 	}
 
-
-
-
+//	public Course deepCopy()
+//	{
+//		Course copy = new Course(name, root);
+//		copy.setSections();
+//	}
 }

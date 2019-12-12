@@ -47,4 +47,10 @@ public class Score implements java.io.Serializable{
 		return String.valueOf(percentage) + "%" + (this.hasComment()?"*":"");
 	}
 
+	public Score deepCopy()
+	{
+		Score copy = new Score(percentage, comment);
+		return copy;
+	}
+
 }

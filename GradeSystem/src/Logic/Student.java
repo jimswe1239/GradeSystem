@@ -42,4 +42,9 @@ public class Student implements Comparable<Student> ,java.io.Serializable{
 		return this.toString().compareTo(other.toString());
 	}
 
+	public Student deepCopy()
+	{
+		Student copy = new Student(name.deepCopy());
+		return copy;
+	}
 }

@@ -8,6 +8,9 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -22,13 +25,15 @@ public class MainWindow extends GSFrame
 {
     private Component rootNode = new Component("name");
     GSComponentNode treeRoot;
+    private Course course;
+    private GradeMap gradeMapCache;
+    private School school;
+    private GSComponentNode curNode;
 
     private GSTree tree;
     private JScrollPane treePanel;
     private GSTable table;
     private JScrollPane tablePanel;
-    private Course course;
-
     private JPanel statisticPanel;
     private JLabel averageLabel = new JLabel("Average");
     private JTextField averageField;
@@ -37,12 +42,17 @@ public class MainWindow extends GSFrame
     private JLabel standardDeviationLabel = new JLabel("Standard Deviation");
     private JTextField standardDeviationField;
     private JPanel curvePanel;
+    private JLabel curveLabel = new JLabel("Curve Number");
+    private JTextField curveField;
+    private JButton curveButton;
     private JPanel buttonPanel;
     private JButton okButton;
     private JButton cancelButton;
-    public MainWindow(Course course) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
+    public MainWindow(Course course, School school) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
+        this.school = school;
         this.course = course;
+        this.gradeMapCache = course.getGradeMap().deepCopy();
         rootNode = course.getRoot();
         initComponent();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//we should ask if they want to save changes?
@@ -58,6 +68,7 @@ public class MainWindow extends GSFrame
         //tree
         {
             treeRoot = initTree(rootNode);
+            curNode = treeRoot;
             tree = new GSTree(treeRoot);
             GSTreeCellRenderer re = new GSTreeCellRenderer();
             tree.setCellRenderer(re);
@@ -69,13 +80,17 @@ public class MainWindow extends GSFrame
                 public void valueChanged(TreeSelectionEvent e)
                 {
                     GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
+                    curNode = node;
                     if(node == null)
                     {
                         return;
                     }
 
                     Component component = (Component) (node.getUserObject());
-                    //TODO: add function of refreshing table relating to the select component
+                    table = refreshTable(node);
+                    refreshStatisticInfo(node);
+                    tablePanel.getViewport().add(table, null);
+                    tablePanel.revalidate();
                     System.out.println(component);
                 }
             });
@@ -117,6 +132,7 @@ public class MainWindow extends GSFrame
         //statistic
         {
             statisticPanel = new JPanel();
+            statisticPanel.setBorder(BorderFactory.createTitledBorder("Statistic"));
             //statisticPanel.setBackground(Color.red);
 
             //statistic information
@@ -190,8 +206,49 @@ public class MainWindow extends GSFrame
         //curve
         {
             curvePanel = new JPanel();
-            curvePanel.setBackground(Color.blue);
+            {
+                GridBagLayout curveGridBag = new GridBagLayout();
+                GridBagConstraints curveC = new GridBagConstraints();
+                curveC.anchor = GridBagConstraints.CENTER;
+                curveC.gridwidth = 1;
+                curveC.gridheight = 1;
+                curveC.insets = new Insets(5, 5, 10, 10);
+                curvePanel.setLayout(curveGridBag);
+                curvePanel.setBorder(BorderFactory.createTitledBorder("Curve"));
+                curveField = new JTextField(5);
+                curveButton = new JButton("OK");
+                curveButton.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        double curveNumber = Double.valueOf(curveField.getText());
+                        //TODO: call curve function here
+                        course.setEndBonus(curveNumber);
+                        table = refreshTable(curNode);
+                        refreshStatisticInfo(curNode);
+                        tablePanel.getViewport().add(table, null);
+                        tablePanel.revalidate();
+                    }
+                });
 
+                curveC.gridx = 0;
+                curveC.gridy = 0;
+                curveGridBag.addLayoutComponent(curveLabel, curveC);
+                curvePanel.add(curveLabel);
+
+                curveC.gridx = 1;
+                curveC.gridy = 0;
+                curveGridBag.addLayoutComponent(curveField, curveC);
+                curvePanel.add(curveField);
+
+                curveC.gridx = 0;
+                curveC.gridy = 1;
+                curveC.gridwidth = 2;
+                curveC.gridheight = 1;
+                curveGridBag.addLayoutComponent(curveButton, curveC);
+                curvePanel.add(curveButton);
+            }
             globalC.gridx = 2;
             globalC.gridy = 1;
             globalC.gridwidth = 1;
@@ -205,15 +262,27 @@ public class MainWindow extends GSFrame
         {
             GridBagLayout buttonGridBag = new GridBagLayout();
             GridBagConstraints buttonC = new GridBagConstraints();
+            buttonC.anchor = GridBagConstraints.CENTER;
+            buttonC.gridwidth = 1;
+            buttonC.gridheight = 1;
+            buttonC.insets = new Insets(5, 5, 10, 10);
             buttonPanel = new JPanel(buttonGridBag);
             {
                 okButton = new JButton("OK");
+                okButton.addActionListener(new ActionListener()
+                {
+                    @Override
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        school.save();
+                        school.get();
+                    }
+                });
                 cancelButton = new JButton("Cancel");
+                okButton.setPreferredSize(cancelButton.getPreferredSize());
 
                 buttonC.gridx = 0;
                 buttonC.gridy = 0;
-                buttonC.gridwidth = 1;
-                buttonC.gridheight = 1;
                 buttonGridBag.addLayoutComponent(okButton, buttonC);
                 buttonC.gridx = 1;
                 buttonC.gridy = 0;
@@ -277,6 +346,8 @@ public class MainWindow extends GSFrame
 //        }
 
         GSTable table = tableContent.createTable(headerString);
+        table.setNode(node);
+        table.setCourse(course);
 
         TableColumnModel cm = table.getColumnModel();
         ColumnGroup no = new ColumnGroup(" ");
@@ -302,11 +373,15 @@ public class MainWindow extends GSFrame
         GroupableTableHeader header = (GroupableTableHeader) table.getTableHeader();
         int[] columnIndex = new int[1];
         columnIndex[0] = 2;
-        ColumnGroup columnGroup = getColumnGroup(node, cm, columnIndex);
-        columnGroup.add(cm.getColumn(columnIndex[0]));
+
         header.addColumnGroup(no);
         //header.addColumnGroup(cs591);
-        header.addColumnGroup(columnGroup);
+        if(!node.isLeaf())
+        {
+            ColumnGroup columnGroup = getColumnGroup(node, cm, columnIndex);
+            columnGroup.add(cm.getColumn(columnIndex[0]));
+            header.addColumnGroup(columnGroup);
+        }
         table.getTableHeader().setUI(new GroupableTableHeaderUI());
 
         return table;
@@ -364,18 +439,23 @@ public class MainWindow extends GSFrame
                     }
                 }
 
-                Grade grade = course.getGradeMap().getGrade(student);
-
-                if(grade==null)
+                double finalScore = -1;
+                try
+                {
+                    finalScore = course.getFinalScore(student, (Component) node.getUserObject());
+                }
+                catch (NullPointerException e)
+                {
+                    finalScore = -1;
+                }
+                if(finalScore == -1)
                 {
                     tableContent.append("");
                 }
                 else
                 {
-                    double finalScore = grade.getFinalScore((Component) node.getUserObject());
                     tableContent.append(finalScore);
                 }
-
                 tableContent.println();
             }
         }
@@ -473,19 +553,7 @@ class GSTree extends JTree
     }
 }
 
-class GSComponentNode extends DefaultMutableTreeNode
-{
-    public GSComponentNode(Component node)
-    {
-        super(node);
-    }
 
-    public String getName()
-    {
-        Component component = (Component) getUserObject();
-        return component.getName();
-    }
-}
 
 class GSTreeCellRenderer extends DefaultTreeCellRenderer
 {

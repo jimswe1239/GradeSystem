@@ -26,8 +26,20 @@ public class GradeMap implements java.io.Serializable{
 		}
 		
 	}
-	
+
 	public Grade getGrade(Student s) {
 		return gMap.get(s);
+	}
+
+	public GradeMap deepCopy()
+	{
+		GradeMap copy = new GradeMap();
+		for(Student student : gMap.keySet())
+		{
+			Grade grade = gMap.get(student);
+			copy.gMap.put(student.deepCopy(), grade.deepCopy());
+		}
+
+		return copy;
 	}
 }

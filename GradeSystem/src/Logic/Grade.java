@@ -15,7 +15,11 @@ public class Grade implements java.io.Serializable{//grade is a score map!
 	}
 	
 	public double getFinalScore(Component root) {
+
 		if(root.isLeaf()) {
+			if(!sMap.containsKey(root)){
+				return 0.0;
+			}
 			return sMap.get(root).getPercentage();
 		}
 		double score = 0;
@@ -28,5 +32,17 @@ public class Grade implements java.io.Serializable{//grade is a score map!
 	public void setEndBonus(double d) {
 		endBonus = d;
 	}
+
+	public Grade deepCopy()
+    {
+        Grade copy = new Grade();
+        for(Component component : sMap.keySet())
+        {
+            Score score = sMap.get(component);
+            copy.sMap.put(component, score.deepCopy());
+        }
+
+        return copy;
+    }
 
 }
