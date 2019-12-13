@@ -146,6 +146,31 @@ public class MainWindow extends GSFrame
             tablePanel = new JScrollPane();
             tablePanel.setViewportView(table);
 
+            table.addMouseListener(new MouseAdapter() {
+            	public void mouseClicked(MouseEvent e) {
+            		if(e.getButton()==MouseEvent.BUTTON3) {
+            			
+            			JPopupMenu menu = new JPopupMenu();
+            			JMenuItem addRow,addCol;
+            			menu.add(addRow = new JMenuItem("Add Row"));
+            			menu.add(addCol = new JMenuItem("Add Column"));
+            			menu.show(table, e.getX(), e.getY());
+            		}
+            	}
+            });
+            tablePanel.addMouseListener(new MouseAdapter() {
+            	public void mouseClicked(MouseEvent e) {
+            		if(e.getButton()==MouseEvent.BUTTON3) {
+            			
+            			JPopupMenu menu = new JPopupMenu();
+            			JMenuItem addRow,addCol;
+            			menu.add(addRow = new JMenuItem("Add Row"));
+            			menu.add(addCol = new JMenuItem("Add Column"));
+            			menu.show(tablePanel, e.getX(), e.getY());
+            		}
+            	}
+            });
+            
             globalC.gridx = 1;
             globalC.gridy = 0;
             globalC.gridwidth = 2;
