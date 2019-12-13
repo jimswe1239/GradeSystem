@@ -11,7 +11,7 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 	private ArrayList<Section> sections;//collections of students
 	private int currentSectionNumber;
 	private GradeMap gradeMap;
-	private int dateCreated;
+	private long dateCreated;
 	
 	public Course(String n) {//default number of sections = 1
 		name = n;
@@ -19,7 +19,8 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		currentSectionNumber = 1;
 		addSection();
 		gradeMap = new GradeMap();
-		System.currentTimeMillis();
+		dateCreated = System.currentTimeMillis();
+		root = new Component(n);
 	}
 	
 	public Course(String n, Component c) {//default number of section = 1
@@ -29,6 +30,7 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		currentSectionNumber = 1;
 		addSection();
 		gradeMap = new GradeMap();
+		dateCreated = System.currentTimeMillis();
 	}
 	
 	public Course(String n, int numOfSections) {//the process for creating a Course must require the user to input number of sections
@@ -37,7 +39,8 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		currentSectionNumber = 1;
 		setSections(numOfSections);
 		gradeMap = new GradeMap();
-		
+		dateCreated = System.currentTimeMillis();
+		root = new Component(n);
 	}
 	
 	public Course(String n, Component c, int numOfSections) {//the process for creating a Course must require the user to input number of sections
@@ -47,6 +50,7 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		currentSectionNumber = 1;
 		setSections(numOfSections);
 		gradeMap = new GradeMap();
+		dateCreated = System.currentTimeMillis();
 	}
 
 	public void setTemplate(Component newRoot) {
@@ -167,6 +171,10 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		for (Student s: this.getStudentList()) {
 			percentageList.add(this.getFinalScore(s, c));
 		}
+		if(percentageList.size()==0)
+		{
+			return Double.NaN;
+		}
 		Collections.sort(percentageList);
 		int numOfScores = percentageList.size();
 		if (numOfScores % 2 == 1) {
@@ -214,14 +222,14 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		return name;
 	}
 
-	public int getDateCreated() {
+	public long getDateCreated() {
 		return dateCreated;
 	}
 	
 	@Override
 	public int compareTo(Course other) {
 		
-		return (new Integer(this.getDateCreated())).compareTo(new Integer(other.getDateCreated()));
+		return (new Long(this.getDateCreated())).compareTo(new Long(other.getDateCreated()));
 	}
 
 //	public Course deepCopy()

@@ -87,24 +87,24 @@ public class GSTable extends JTable
         }
 
         JTextField tf = new JTextField();
-//        tf.addActionListener(new ActionListener()
-//        {
-//            @Override
-//            public void actionPerformed(ActionEvent e)
-//            {
-//                if (Integer.parseInt(tf.getText())<=0)
-//                {
-//
-//                }
-//            }
-//        });
-        tf.addKeyListener(new KeyAdapter()
+        tf.addActionListener(new ActionListener()
         {
-            public void keyReleased(KeyEvent e)
+            @Override
+            public void actionPerformed(ActionEvent e)
             {
-                event();
-            };
+                if (Integer.parseInt(tf.getText())<=0)
+                {
+                    event();
+                }
+            }
         });
+//        tf.addKeyListener(new KeyAdapter()
+//        {
+//            public void keyReleased(KeyEvent e)
+//            {
+//                event();
+//            };
+//        });
         tf.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         tf.setSelectionStart(0);
         tf.setSelectionEnd(tf.getText().length());
@@ -134,11 +134,11 @@ public class GSTable extends JTable
                     value = 0;
                 }
             }
-//            System.out.println("row:" + row + ", column:" + column + ", value:" + value);
+            System.out.println("row:" + row + ", column:" + column + ", value:" + value);
             Student student = getStudent(row);
-//            System.out.println(student);
+            System.out.println(student);
             Logic.Component component = getComponent(column, node);
-//            System.out.println(component.getName());
+            System.out.println(component.getName());
             course.getGradeMap().putScore(student, new Score(value), component);
             mainWindow.refreshTableNStatistic();
         }

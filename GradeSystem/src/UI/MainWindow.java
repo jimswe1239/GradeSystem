@@ -275,6 +275,7 @@ public class MainWindow extends GSFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
+
                         school.save();
                         refreshTableNStatistic();
                     }
@@ -425,6 +426,10 @@ public class MainWindow extends GSFrame
         {
             ArrayList<Student> students = section.getStudentList();
             int studentNum = section.getStudentList().size();
+            if(studentNum == 0)
+            {
+                continue;
+            }
             tableContent.append(section.name, 1, studentNum);   // add the section row header
             for(Student student : students) // traverse all students in this section
             {

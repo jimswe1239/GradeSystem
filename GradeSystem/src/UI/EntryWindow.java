@@ -223,6 +223,7 @@ public class EntryWindow extends GSFrame
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
     	School s = new School().get();
+    	s = initSchoolForTest();
         EntryWindow test = new EntryWindow(s);
         test.setVisible(true);
     }
