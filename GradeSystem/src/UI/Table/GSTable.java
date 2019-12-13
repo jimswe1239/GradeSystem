@@ -5,12 +5,15 @@ import Logic.Score;
 import Logic.Section;
 import Logic.Student;
 import UI.GSComponentNode;
+import UI.MainWindow;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.xml.ws.handler.LogicalHandler;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Enumeration;
@@ -20,12 +23,18 @@ public class GSTable extends JTable
     private GridSplit gridSplit;
     private Course course;
     private GSComponentNode node;
+    private MainWindow mainWindow;
 
     public GSTable(GridSplit gridSplit, TableModel tbl)
     {
         super(tbl);
         this.gridSplit = gridSplit;
         setUI(new DSTableUI());
+    }
+
+    public void setMainWindow(MainWindow mainWindow)
+    {
+        this.mainWindow = mainWindow;
     }
 
     public void setCourse(Course course)
@@ -78,6 +87,17 @@ public class GSTable extends JTable
         }
 
         JTextField tf = new JTextField();
+//        tf.addActionListener(new ActionListener()
+//        {
+//            @Override
+//            public void actionPerformed(ActionEvent e)
+//            {
+//                if (Integer.parseInt(tf.getText())<=0)
+//                {
+//
+//                }
+//            }
+//        });
         tf.addKeyListener(new KeyAdapter()
         {
             public void keyReleased(KeyEvent e)
@@ -105,7 +125,14 @@ public class GSTable extends JTable
             if (com instanceof JTextField)
             {
                 String text = ((JTextField) com).getText();
-                value = Double.valueOf(text);
+                if(!text.equals(""))
+                {
+                    value = Double.valueOf(text);
+                }
+                else
+                {
+                    value = 0;
+                }
             }
 //            System.out.println("row:" + row + ", column:" + column + ", value:" + value);
             Student student = getStudent(row);
@@ -113,6 +140,7 @@ public class GSTable extends JTable
             Logic.Component component = getComponent(column, node);
 //            System.out.println(component.getName());
             course.getGradeMap().putScore(student, new Score(value), component);
+            mainWindow.refreshTableNStatistic();
         }
     }
 

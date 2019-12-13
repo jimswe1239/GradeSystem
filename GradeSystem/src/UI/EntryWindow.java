@@ -89,7 +89,6 @@ public class EntryWindow extends GSFrame
           {
         	MainWindow toOpen = null;
 			try {
-			    school=school.get();
 				toOpen = new MainWindow((Course)dropdown.getSelectedItem(), school);
 			} catch (ClassNotFoundException e1) {
 				// TODO Auto-generated catch block
@@ -158,6 +157,7 @@ public class EntryWindow extends GSFrame
 
     private static School initSchoolForTest() {
     	School ret = new School();
+    	ret=ret.get();
     	Course c1 = initCourse1ForTest();
     	Course c2 = initCourse2ForTest();
     	ret.addCourse(c1);
@@ -222,7 +222,8 @@ public class EntryWindow extends GSFrame
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-    	EntryWindow test = new EntryWindow(initSchoolForTest());
+    	School s = new School().get();
+        EntryWindow test = new EntryWindow(s);
         test.setVisible(true);
     }
     
