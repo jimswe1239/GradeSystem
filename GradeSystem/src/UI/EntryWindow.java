@@ -158,6 +158,8 @@ public class EntryWindow extends GSFrame
     private static School initSchoolForTest() {
     	School ret = new School();
     	ret=ret.get();
+    	if(ret==null)
+    	    ret=new School();
     	Course c1 = initCourse1ForTest();
     	Course c2 = initCourse2ForTest();
     	ret.addCourse(c1);
@@ -223,7 +225,8 @@ public class EntryWindow extends GSFrame
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
     	School s = new School().get();
-    	s = initSchoolForTest();
+    	if(s==null)
+    	    s=new School();
         EntryWindow test = new EntryWindow(s);
         test.setVisible(true);
     }

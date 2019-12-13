@@ -93,7 +93,7 @@ public class School implements java.io.Serializable{
 			out.writeObject(this);
 			out.close();
 			fileOut.close();
-			System.out.printf("Serialized data is saved in D:/employee.ser");
+			System.out.printf("Serialized data is saved in E:/employee.ser");
 		}catch(IOException i)
 		{
 			i.printStackTrace();
