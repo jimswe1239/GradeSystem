@@ -192,6 +192,10 @@ public class Component implements java.io.Serializable{
 	public Component getParent() {
 		return parent;
 	}
+	
+	public void deleteComponent(Component c) {
+		this.children.remove(c);
+	}
 
 
 

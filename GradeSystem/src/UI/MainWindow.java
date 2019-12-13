@@ -100,26 +100,52 @@ public class MainWindow extends GSFrame
             });
             tree.addMouseListener(new MouseAdapter() {
             	public void mouseClicked(MouseEvent e) {
+            		JPopupMenu menu = new JPopupMenu();
+    				JMenuItem add,delete,save;
+    				JMenuItem category, template;
+    				JMenu m = new JMenu("Save as");
+    				category = new JMenuItem("Category");
+    				m.add(category = new JMenuItem("Category"));
+    				menu.add(add = new JMenuItem("Add"));
+    	            menu.add(delete = new JMenuItem("Delete"));    	            
+    	            menu.add(m);
+    				
             		if(e.getButton()==MouseEvent.BUTTON3) {
             			TreePath path = tree.getPathForLocation(e.getX(), e.getY());
             			tree.setSelectionPath(path);
             			GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
             			if(node!=null) {
             				//generate the menu
-            				JPopupMenu menu = new JPopupMenu();
-            				JMenuItem add,delete,save;
-            				JMenuItem category, template;
-            				JMenu m = new JMenu("Save as");
-            				m.add(category = new JMenuItem("Category"));
-            				m.add(template = new JMenuItem("Template"));
-            				menu.add(add = new JMenuItem("Add"));
-            	            menu.add(delete = new JMenuItem("Delete"));
-            	            
-            	            menu.add(m);
-            	            menu.show(tree, e.getX(), e.getY());
-            	            
+            	            menu.show(tree, e.getX(), e.getY());    
             			}
             		}
+            		
+            		//add the function of add
+            		add.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
+							AddComponent addComponent = new AddComponent((Component)node.getUserObject(), MainWindow.this);
+							addComponent.setVisible(true);
+						}
+            			
+            		});
+            		delete.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
+							Component toDelete = (Component)node.getUserObject();
+							GSComponentNode parentNode = (GSComponentNode)node.getParent();
+							Component parentComponent = (Component)parentNode.getUserObject();
+							parentComponent.deleteComponent(toDelete);
+							
+						}
+            			
+            		});
             	}
             });
 
