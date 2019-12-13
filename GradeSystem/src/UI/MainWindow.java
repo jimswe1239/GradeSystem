@@ -7,10 +7,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -92,7 +95,32 @@ public class MainWindow extends GSFrame
                     tablePanel.getViewport().add(table, null);
                     tablePanel.revalidate();
                     System.out.println(component);
+                    
                 }
+            });
+            tree.addMouseListener(new MouseAdapter() {
+            	public void mouseClicked(MouseEvent e) {
+            		if(e.getButton()==MouseEvent.BUTTON3) {
+            			TreePath path = tree.getPathForLocation(e.getX(), e.getY());
+            			tree.setSelectionPath(path);
+            			GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
+            			if(node!=null) {
+            				//generate the menu
+            				JPopupMenu menu = new JPopupMenu();
+            				JMenuItem add,delete,save;
+            				JMenuItem category, template;
+            				JMenu m = new JMenu("Save as");
+            				m.add(category = new JMenuItem("Category"));
+            				m.add(template = new JMenuItem("Template"));
+            				menu.add(add = new JMenuItem("Add"));
+            	            menu.add(delete = new JMenuItem("Delete"));
+            	            
+            	            menu.add(m);
+            	            menu.show(tree, e.getX(), e.getY());
+            	            
+            			}
+            		}
+            	}
             });
 
             treePanel = new JScrollPane();
@@ -309,6 +337,9 @@ public class MainWindow extends GSFrame
     private GSComponentNode initTree(Component node)
     {
         GSComponentNode treeNode = new GSComponentNode(node);
+        
+        
+        
         if(!node.children.isEmpty())
         {
             HashMap<Component,Double> children = node.children;
@@ -540,10 +571,16 @@ public class MainWindow extends GSFrame
 
 class GSTree extends JTree
 {
+	//selection menu
+	JMenuItem add = null, delete = null, save = null; 
+
+    
     public GSTree(GSComponentNode root)
     {
         super(root);
         setFeatures();
+        
+        
     }
 
     private void setFeatures()
