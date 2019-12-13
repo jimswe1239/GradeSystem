@@ -67,7 +67,7 @@ public class School implements java.io.Serializable{
 		School s = null;
 		try
 		{
-			FileInputStream fileIn = new FileInputStream("E:/employee.ser");
+			FileInputStream fileIn = new FileInputStream("D:/employee.ser");
 			ObjectInputStream in = new ObjectInputStream(fileIn);
 			s = (School) in.readObject();
 			in.close();
@@ -88,7 +88,7 @@ public class School implements java.io.Serializable{
 		try
 		{
 			FileOutputStream fileOut =
-					new FileOutputStream("E:/employee.ser");
+					new FileOutputStream("D:/employee.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(this);
 			out.close();
