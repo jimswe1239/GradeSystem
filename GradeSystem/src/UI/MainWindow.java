@@ -7,6 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import java.awt.*;
@@ -136,13 +138,16 @@ public class MainWindow extends GSFrame
 
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							// TODO Auto-generated method stub
+							//delete from the component
 							GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
 							Component toDelete = (Component)node.getUserObject();
 							GSComponentNode parentNode = (GSComponentNode)node.getParent();
 							Component parentComponent = (Component)parentNode.getUserObject();
 							parentComponent.deleteComponent(toDelete);
-							
+							//delete from the tree
+							DefaultTreeModel tm = (DefaultTreeModel)tree.getModel();
+							tm.removeNodeFromParent(node);
+							tree.updateUI();
 						}
             			
             		});

@@ -152,7 +152,10 @@ public class Component implements java.io.Serializable{
 		if(parent == null) {
 			return 100.0;
 		}
-		return parent.children.get(this);
+		if(parent.children.get(this)!=null) {
+			return parent.children.get(this);
+		}
+		else return 0;
 	}
 	
 	public String toString() {
