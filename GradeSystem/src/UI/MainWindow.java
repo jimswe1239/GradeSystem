@@ -413,11 +413,6 @@ public class MainWindow extends GSFrame
         tree.updateUI();
     }
 
-//    public void addTreeNode(GSComponentNode father, GSComponentNode children)
-//    {
-//        father.add(children);
-//    }
-
     public void refreshTableNStatistic()
     {
         table = refreshTable(curNode);
@@ -431,25 +426,9 @@ public class MainWindow extends GSFrame
         String[] headerString = refreshTableHeader(node);
 
         TableContent tableContent = refreshTableContent(node);
-//        TableContent tableContent = new TableContent();
-//        {
-//            tableContent.append("A1", 1, 3);
-//            tableContent.append("Stu1");
-//            tableContent.println();
-//            tableContent.append("Stu2");
-//            tableContent.println();
-//            tableContent.append("Stu3");
-//            tableContent.println();
-//            tableContent.append("A2", 1, 3);
-//            tableContent.append("Stu4");
-//            tableContent.println();
-//            tableContent.append("Stu5");
-//            tableContent.println();
-//            tableContent.append("Stu6");
-//            tableContent.println();
-//        }
 
         GSTable table = tableContent.createTable(headerString);
+        table.setParaOfTableMode(this, course, node);
         table.setNode(node);
         table.setCourse(course);
         table.setMainWindow(this);

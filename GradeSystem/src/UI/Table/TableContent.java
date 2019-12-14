@@ -112,6 +112,7 @@ public class TableContent
 			}
 			row++;
 		}
+
 		return new GSTableModel(data,columnHeaders);
 	}
 	

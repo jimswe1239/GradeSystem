@@ -8,6 +8,8 @@ import UI.GSComponentNode;
 import UI.MainWindow;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableModel;
 import javax.xml.ws.handler.LogicalHandler;
@@ -30,6 +32,15 @@ public class GSTable extends JTable
         super(tbl);
         this.gridSplit = gridSplit;
         setUI(new DSTableUI());
+    }
+
+    public void setParaOfTableMode(MainWindow mainWindow, Course course, GSComponentNode node)
+    {
+        GSTableModel tableModel = (GSTableModel) getModel();
+
+        tableModel.setMainWindow(mainWindow);
+        tableModel.setCourse(course);
+        tableModel.setNode(node);
     }
 
     public void setMainWindow(MainWindow mainWindow)
@@ -85,64 +96,40 @@ public class GSTable extends JTable
         {
             return false;
         }
-
-        JTextField tf = new JTextField();
-        tf.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                if (Integer.parseInt(tf.getText())<=0)
-                {
-                    event();
-                }
-            }
-        });
-//        tf.addKeyListener(new KeyAdapter()
-//        {
-//            public void keyReleased(KeyEvent e)
-//            {
-//                event();
-//            };
-//        });
-        tf.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-        tf.setSelectionStart(0);
-        tf.setSelectionEnd(tf.getText().length());
-        getColumnModel().getColumn(col).setCellEditor(new DefaultCellEditor(tf));
         return true;
     }
 
-    private void event()
-    {
-        int row = getEditingRow();
-        int column = getEditingColumn();
-
-        DefaultCellEditor obj = (DefaultCellEditor) (getColumnModel().getColumn(column).getCellEditor());
-        if (obj != null)
-        {
-            JComponent com = (JComponent) obj.getComponent();
-            double value = 0;
-            if (com instanceof JTextField)
-            {
-                String text = ((JTextField) com).getText();
-                if(!text.equals(""))
-                {
-                    value = Double.valueOf(text);
-                }
-                else
-                {
-                    value = 0;
-                }
-            }
-            System.out.println("row:" + row + ", column:" + column + ", value:" + value);
-            Student student = getStudent(row);
-            System.out.println(student);
-            Logic.Component component = getComponent(column, node);
-            System.out.println(component.getName());
-            course.getGradeMap().putScore(student, new Score(value), component);
-            mainWindow.refreshTableNStatistic();
-        }
-    }
+//    private void event()
+//    {
+//        int row = getEditingRow();
+//        int column = getEditingColumn();
+//
+//        DefaultCellEditor obj = (DefaultCellEditor) (getColumnModel().getColumn(column).getCellEditor());
+//        if (obj != null)
+//        {
+//            JComponent com = (JComponent) obj.getComponent();
+//            double value = 0;
+//            if (com instanceof JTextField)
+//            {
+//                String text = ((JTextField) com).getText();
+//                if(!text.equals(""))
+//                {
+//                    value = Double.valueOf(text);
+//                }
+//                else
+//                {
+//                    value = 0;
+//                }
+//            }
+//            System.out.println("row:" + row + ", column:" + column + ", value:" + value);
+//            Student student = getStudent(row);
+//            System.out.println(student);
+//            Logic.Component component = getComponent(column, node);
+//            System.out.println(component.getName());
+//            course.getGradeMap().putScore(student, new Score(value), component);
+//            mainWindow.refreshTableNStatistic();
+//        }
+//    }
 
     public Student getStudent(int row)
     {
