@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.tree.TreePath;
 import java.awt.Color;
 
 public class AddComponent extends JFrame {
@@ -47,7 +48,7 @@ public class AddComponent extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddComponent(Component root, MainWindow mw) {
+	public AddComponent(GSComponentNode node, Component root, MainWindow mw) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 504, 319);
 		contentPane = new JPanel();
@@ -125,10 +126,14 @@ public class AddComponent extends JFrame {
 					return;
 				}
 				//if OK
-				root.addComponentAndScale(new Component(componentName), percentage);
+				Component newComponent = new Component(componentName);
+				root.addComponentAndScale(newComponent, percentage);
+				node.add(new GSComponentNode(newComponent));
 				JOptionPane.showMessageDialog(btnNewButton,"Add new component: "+componentName+" Succesfully!");
-				AddComponent.this.setVisible(false);
+				mw.refreshTree(node);
 				mw.refreshTableNStatistic();
+				AddComponent.this.setVisible(false);
+				dispose();
 			}
 			
 		});

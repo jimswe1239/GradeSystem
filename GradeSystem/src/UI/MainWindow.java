@@ -129,7 +129,7 @@ public class MainWindow extends GSFrame
 						public void actionPerformed(ActionEvent e) {
 							// TODO Auto-generated method stub
 							GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
-							AddComponent addComponent = new AddComponent((Component)node.getUserObject(), MainWindow.this);
+							AddComponent addComponent = new AddComponent(node, (Component)node.getUserObject(), MainWindow.this);
 							addComponent.setVisible(true);
 						}
             			
@@ -147,7 +147,9 @@ public class MainWindow extends GSFrame
 							//delete from the tree
 							DefaultTreeModel tm = (DefaultTreeModel)tree.getModel();
 							tm.removeNodeFromParent(node);
-							tree.updateUI();
+							refreshTree(parentNode);
+//							tree.setSelectionPath(new TreePath(parentNode));
+//							tree.updateUI();
 						}
             			
             		});
@@ -155,10 +157,6 @@ public class MainWindow extends GSFrame
             });
 
             treePanel = new JScrollPane();
-//            Dimension d = treePanel.getSize();
-//            System.out.println("width: " + d.width);
-//            System.out.println("height: " + d.height);
-//            treePanel.setMinimumSize(d);
             treePanel.setViewportView(tree);
 
             globalC.gridx = 0;
@@ -395,9 +393,7 @@ public class MainWindow extends GSFrame
     private GSComponentNode initTree(Component node)
     {
         GSComponentNode treeNode = new GSComponentNode(node);
-        
-        
-        
+
         if(!node.children.isEmpty())
         {
             HashMap<Component,Double> children = node.children;
@@ -410,6 +406,17 @@ public class MainWindow extends GSFrame
 
         return treeNode;
     }
+
+    public void refreshTree(GSComponentNode node)
+    {
+        tree.setSelectionPath(new TreePath(node));
+        tree.updateUI();
+    }
+
+//    public void addTreeNode(GSComponentNode father, GSComponentNode children)
+//    {
+//        father.add(children);
+//    }
 
     public void refreshTableNStatistic()
     {
