@@ -8,6 +8,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
@@ -103,13 +104,14 @@ public class MainWindow extends GSFrame
             tree.addMouseListener(new MouseAdapter() {
             	public void mouseClicked(MouseEvent e) {
             		JPopupMenu menu = new JPopupMenu();
-    				JMenuItem add,delete,save;
+    				JMenuItem add,delete,changeScale;
     				JMenuItem category, template;
     				JMenu m = new JMenu("Save as");
     				category = new JMenuItem("Category");
     				m.add(category = new JMenuItem("Category"));
     				menu.add(add = new JMenuItem("Add"));
-    	            menu.add(delete = new JMenuItem("Delete"));    	            
+    	            menu.add(delete = new JMenuItem("Delete"));  
+    	            menu.add(changeScale = new JMenuItem("Change scale"));
     	            menu.add(m);
     				
             		if(e.getButton()==MouseEvent.BUTTON3) {
@@ -150,6 +152,18 @@ public class MainWindow extends GSFrame
 							refreshTree(parentNode);
 //							tree.setSelectionPath(new TreePath(parentNode));
 //							tree.updateUI();
+						}
+            			
+            		});
+            		changeScale.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// change scale of the selected component
+							GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
+							Component toChange = (Component)node.getUserObject();
+							ChangeComponentScale ccs = new ChangeComponentScale(node, toChange, MainWindow.this);
+							ccs.setVisible(true);
 						}
             			
             		});
@@ -636,7 +650,6 @@ class GSTree extends JTree
     {
         super(root);
         setFeatures();
-        
         
     }
 

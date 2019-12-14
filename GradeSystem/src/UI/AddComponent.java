@@ -144,6 +144,7 @@ public class AddComponent extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				AddComponent.this.setVisible(false);
+				dispose();
 			}
 		});
 	}

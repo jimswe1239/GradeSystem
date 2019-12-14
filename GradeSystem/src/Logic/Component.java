@@ -65,8 +65,10 @@ public class Component implements java.io.Serializable{
 			
 			double decimalTotal = newTotal / 100; //convert from percentage to decimal
 			
-			for (Component c : children.keySet()) {
-				children.replace(c, (children.get(c) * decimalTotal));
+			if(this.getSumScaleOfChildren()+per>100) {
+				for (Component c : children.keySet()) {
+					children.replace(c, (children.get(c) * decimalTotal));
+				}
 			}
 			
 			children.put(toAdd,(double) per);
@@ -112,10 +114,18 @@ public class Component implements java.io.Serializable{
 			if (child == c) {
 				children.replace(child, newPer);
 			}
-			else {
+			else if(getSumScaleOfChildren()>100) {
 				children.replace(child, (children.get(child) * decimalTotal));
 			}
 		}
+	}
+	
+	public double getSumScaleOfChildren() {
+		double sum = 0;
+		for (Component child : children.keySet()) {
+			sum += children.get(child);
+		}
+		return sum;
 	}
 	
 	public HashMap<Component, Double> getChildren(){//use this to get the old values of all of the children, so you can display them as defaults when adding a new component and manually changing the old components. You should then make a keySet of the components in this HashMap, and create a new hashMap with all of the old keys, plus then new one, and use that set of keys, and the values that the user enters, to create a new hashmap to pass into changeAllChildren
