@@ -152,7 +152,8 @@ public class EntryWindow extends GSFrame
                     MainWindow toOpen = null;
                     try {
 //			    school = school.get();
-                        Course newCourse = new Course(titleField.getText(), (Component) templates.getSelectedItem());
+                        Component exportedTemplate = school.getTotalTemplates().importComponent(((Component)templates.getSelectedItem()));
+                        Course newCourse = new Course(titleField.getText(), exportedTemplate);
                         school.addCourse(newCourse);
                         toOpen = new MainWindow(newCourse, school, self);
                     } catch (ClassNotFoundException e1) {
@@ -268,10 +269,9 @@ public class EntryWindow extends GSFrame
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
     	School s = new School().get();
-    	if(s==null)
-    	{
-            s = new School();
-        }
+    	if(s==null) {
+    	    s=new School();
+    	}
         EntryWindow test = new EntryWindow(s);
         test.setVisible(true);
     }
