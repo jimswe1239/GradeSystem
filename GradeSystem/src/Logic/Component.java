@@ -212,6 +212,10 @@ public class Component implements java.io.Serializable{
 		this.children.remove(c);
 	}
 
+	public void rename(String name){
+		this.name=name;
+	}
+
 
 
 }
