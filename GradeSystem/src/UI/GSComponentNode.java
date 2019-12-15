@@ -42,6 +42,7 @@ public class GSComponentNode extends DefaultMutableTreeNode
     	if(sum!=100) {
     		//TODO: Make the node highlight
     		return false;
+
     	}
     	
     	return true;

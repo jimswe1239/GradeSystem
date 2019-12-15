@@ -645,7 +645,6 @@ class GSTree extends JTree
 	//selection menu
 	JMenuItem add = null, delete = null, save = null; 
 
-    
     public GSTree(GSComponentNode root)
     {
         super(root);
@@ -660,8 +659,6 @@ class GSTree extends JTree
     }
 }
 
-
-
 class GSTreeCellRenderer extends DefaultTreeCellRenderer
 {
     public GSTreeCellRenderer()
@@ -674,7 +671,34 @@ class GSTreeCellRenderer extends DefaultTreeCellRenderer
     {
         //setBackgroundNonSelectionColor(new Color(28,40,51));
         //setTextNonSelectionColor(Color.WHITE);
-        setOpenIcon(null);
+        //setOpenIcon(null);
+    }
+
+    @Override
+    public java.awt.Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus)
+    {
+        JComponent c = (JComponent)super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+
+        if (sel)
+        {
+            c.setOpaque(false);
+            c.setForeground(getTextSelectionColor());
+        }
+        else
+            {
+                c.setOpaque(true);
+            value = (GSComponentNode) value;
+            if (!((GSComponentNode) value).checkChildrenSumIs100())
+            {
+                c.setForeground(getTextNonSelectionColor());
+                c.setBackground(Color.YELLOW);
+            } else
+                {
+                c.setForeground(getTextNonSelectionColor());
+                c.setBackground(getBackgroundNonSelectionColor());
+            }
+        }
+        return c;
     }
 }
 
