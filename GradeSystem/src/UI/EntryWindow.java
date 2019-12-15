@@ -15,10 +15,15 @@ import Logic.Component;
 
 public class EntryWindow extends GSFrame
 {
+    private EntryWindow self = this;
+
+    private JPanel vePanel = new JPanel();
     private GSButton buttonSelect;
     private GSButton buttonAdd;
     private GSCourseDropdown dropdown;
+    private JLabel titleLabel = new JLabel("Course Name");
     private GSTextField titleField;
+    private JLabel templateLabel = new JLabel("Template");
     private GSComponentDropdown templates;
     private School school;
     
@@ -31,12 +36,12 @@ public class EntryWindow extends GSFrame
         {
             buttonSelect = new GSButton("View/Edit Course");
         }
+
         //buttonAdd
         {
             buttonAdd = new GSButton("Add New Course");
         }
 
-        
         //dropdowns
         {
         	Course[] drowdownArray = school.getCourseArray();
@@ -45,7 +50,7 @@ public class EntryWindow extends GSFrame
         	Component[] templateArray = school.getTemplateArray();
         	templates = new GSComponentDropdown(templateArray);
         }
-        
+
         //textFields
         {
         	titleField = new GSTextField();
@@ -59,101 +64,125 @@ public class EntryWindow extends GSFrame
         GridBagLayout globalGridBag = new GridBagLayout();
         GridBagConstraints globalC = new GridBagConstraints();
         JPanel panel = new JPanel(globalGridBag);
+        globalC.insets = new Insets(5, 15, 5, 15);
+
+        GridBagLayout veGridBag = new GridBagLayout();
+        GridBagConstraints veC = new GridBagConstraints();
+        JPanel vePanel = new JPanel(veGridBag);
+        vePanel.setBorder(BorderFactory.createTitledBorder("View/Edit"));
+        // View and edit course
+        {
+            veC.insets = new Insets(5, 5, 10, 10);
+            veC.gridx = 0;
+            veC.gridy = 0;
+            veC.gridwidth = 1;
+            veC.gridheight = 1;
+            veGridBag.addLayoutComponent(dropdown, veC);
+            vePanel.add(dropdown);
+
+            veC.gridx = 0;
+            veC.gridy = 1;
+            veGridBag.addLayoutComponent(buttonSelect, veC);
+            vePanel.add(buttonSelect);
+            buttonSelect.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    MainWindow toOpen = null;
+                    try {
+                        toOpen = new MainWindow((Course) dropdown.getSelectedItem(), school, self);
+                    } catch (ClassNotFoundException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (InstantiationException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IllegalAccessException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (UnsupportedLookAndFeelException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+
+                    setVisible(false);
+                    toOpen.setVisible(true);
+                }
+
+            });
+        }
         globalC.gridx = 0;
         globalC.gridy = 0;
-        globalC.gridwidth = 1;
-        globalC.gridheight = 3;
-        globalGridBag.addLayoutComponent(dropdown, globalC);
-        
-        globalC.gridx = 3;
-        globalC.gridy = 3;
-        globalC.gridwidth = 1;
-        globalC.gridheight = 3;
-        globalGridBag.addLayoutComponent(templates, globalC);
-        
+        panel.add(vePanel);
+
+        GridBagLayout addGridBag = new GridBagLayout();
+        GridBagConstraints addC = new GridBagConstraints();
+        JPanel addPanel = new JPanel(addGridBag);
+        addPanel.setBorder(BorderFactory.createTitledBorder("Add"));
+        // Add course
+        {
+            addC.insets = new Insets(5, 5, 10, 10);
+
+            addC.gridx = 0;
+            addC.gridy = 0;
+            addGridBag.addLayoutComponent(titleLabel, addC);
+            addPanel.add(titleLabel);
+
+            addC.gridx = 1;
+            addC.gridy = 0;
+            addGridBag.addLayoutComponent(titleField, addC);
+            addPanel.add(titleField);
+
+            addC.gridx = 0;
+            addC.gridy = 1;
+            addC.gridwidth = GridBagConstraints.RELATIVE;
+            addGridBag.addLayoutComponent(templateLabel, addC);
+            addPanel.add(templateLabel);
+
+            addC.gridx = 1;
+            addC.gridy = 1;
+            addC.gridwidth = GridBagConstraints.REMAINDER;
+            addGridBag.addLayoutComponent(templates, addC);
+            addPanel.add(templates);
+
+            addC.gridx = 0;
+            addC.gridy = 2;
+            addGridBag.addLayoutComponent(buttonAdd, addC);
+            addPanel.add(buttonAdd);
+            buttonAdd.addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    MainWindow toOpen = null;
+                    try {
+//			    school = school.get();
+                        Course newCourse = new Course(titleField.getText(), (Component) templates.getSelectedItem());
+                        school.addCourse(newCourse);
+                        toOpen = new MainWindow(newCourse, school, self);
+                    } catch (ClassNotFoundException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (InstantiationException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (IllegalAccessException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    } catch (UnsupportedLookAndFeelException e1) {
+                        // TODO Auto-generated catch block
+                        e1.printStackTrace();
+                    }
+
+                    toOpen.setVisible(true);
+                    setVisible(false);
+                }
+
+            });
+        }
         globalC.gridx = 1;
         globalC.gridy = 0;
-        globalC.gridwidth = 1;
-        globalC.gridheight = 3;
-        globalGridBag.addLayoutComponent(buttonSelect, globalC);
+        panel.add(addPanel);
 
-        globalC.gridx = 5;
-        globalC.gridy = 3;
-        globalC.gridwidth = 1;
-        globalC.gridheight = 3;
-        globalGridBag.addLayoutComponent(titleField, globalC);
-        
-        buttonSelect.addActionListener(new ActionListener()
-        {
-          public void actionPerformed(ActionEvent e)
-          {
-        	MainWindow toOpen = null;
-			try {
-				toOpen = new MainWindow((Course)dropdown.getSelectedItem(), school);
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (InstantiationException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (UnsupportedLookAndFeelException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-        	toOpen.setVisible(true);
-          }
-
-        });
-        
-        globalC.gridx = 1;
-        globalC.gridy = 1;
-        globalC.gridwidth = 1;
-        globalC.gridheight = 3;
-        //globalGridBag.addLayoutComponent(buttonAdd, globalC);
-        buttonAdd.addActionListener(new ActionListener()
-        {
-          public void actionPerformed(ActionEvent e)
-          {
-        	MainWindow toOpen = null;
-			try {
-//			    school = school.get();
-				Course newCourse = new Course(titleField.getText(), (Component)templates.getSelectedItem());
-				school.addCourse(newCourse);
-				toOpen = new MainWindow(newCourse, school);
-			} catch (ClassNotFoundException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (InstantiationException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (IllegalAccessException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} catch (UnsupportedLookAndFeelException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-
-        	toOpen.setVisible(true);
-          }
-
-        });
-        
-        
-        panel.add(buttonSelect);
-        panel.add(buttonAdd);
-        panel.add(dropdown);
-        panel.add(titleField);
-        panel.add(templates);
         setContentPane(panel);
         pack();
         setLocationRelativeTo(null);
     }
-
 
     private static School initSchoolForTest() {
     	School ret = new School();
@@ -221,6 +250,20 @@ public class EntryWindow extends GSFrame
         course2.addStudent(new Student("T", "C"), section);
         
         return course2;
+    }
+
+    public void refreshDropDowns()
+    {
+        Course[] dropDownArray = school.getCourseArray();
+        dropdown.setModel(new DefaultComboBoxModel<Course>(dropDownArray));
+        dropdown.revalidate();
+        dropdown.updateUI();
+
+        Component[] templateArray = school.getTemplateArray();
+        templates.setModel(new DefaultComboBoxModel<>(templateArray));
+        templates.revalidate();
+        templates.updateUI();
+        repaint();
     }
 
     public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {

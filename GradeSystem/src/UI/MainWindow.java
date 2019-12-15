@@ -13,10 +13,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -32,9 +29,11 @@ public class MainWindow extends GSFrame
     private Component rootNode = new Component("name");
     GSComponentNode treeRoot;
     private Course course;
-    private GradeMap gradeMapCache;
     private School school;
     private GSComponentNode curNode;
+    private EntryWindow father;
+    private boolean modified = false;
+    private MainWindow self = this;
 
     private GSTree tree;
     private JScrollPane treePanel;
@@ -52,16 +51,32 @@ public class MainWindow extends GSFrame
     private JTextField curveField;
     private JButton curveButton;
     private JPanel buttonPanel;
-    private JButton okButton;
+    private JButton saveButton;
     private JButton cancelButton;
-    public MainWindow(Course course, School school) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
+    public MainWindow(Course course, School school, EntryWindow father) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException
     {
+        this.father = father;
         this.school = school;
         this.course = course;
         //this.gradeMapCache = course.getGradeMap().deepCopy();
         rootNode = course.getRoot();
         initComponent();
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);//we should ask if they want to save changes?
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                if(modified)
+                {
+                    int ret = JOptionPane.showConfirmDialog(null, "Do you want to save change?", "Attention", JOptionPane.OK_OPTION, JOptionPane.NO_OPTION);
+                    if (ret == JOptionPane.OK_OPTION)
+                    {
+                        school.save();
+                    }
+                }
+                closeFrame();
+            }
+        });
         setMinimumSize(getSize());
         treePanel.setMinimumSize(treePanel.getSize());
     }
@@ -97,7 +112,6 @@ public class MainWindow extends GSFrame
                     refreshStatisticInfo(node);
                     tablePanel.getViewport().add(table, null);
                     tablePanel.revalidate();
-                    System.out.println(component);
                     
                 }
             });
@@ -365,8 +379,8 @@ public class MainWindow extends GSFrame
             buttonC.insets = new Insets(5, 5, 10, 10);
             buttonPanel = new JPanel(buttonGridBag);
             {
-                okButton = new JButton("OK");
-                okButton.addActionListener(new ActionListener()
+                saveButton = new JButton("Save");
+                saveButton.addActionListener(new ActionListener()
                 {
                     @Override
                     public void actionPerformed(ActionEvent e)
@@ -377,15 +391,15 @@ public class MainWindow extends GSFrame
                     }
                 });
                 cancelButton = new JButton("Cancel");
-                okButton.setPreferredSize(cancelButton.getPreferredSize());
+                saveButton.setPreferredSize(cancelButton.getPreferredSize());
 
                 buttonC.gridx = 0;
                 buttonC.gridy = 0;
-                buttonGridBag.addLayoutComponent(okButton, buttonC);
+                buttonGridBag.addLayoutComponent(saveButton, buttonC);
                 buttonC.gridx = 1;
                 buttonC.gridy = 0;
                 buttonGridBag.addLayoutComponent(cancelButton, buttonC);
-                buttonPanel.add(okButton);
+                buttonPanel.add(saveButton);
                 buttonPanel.add(cancelButton);
             }
 
@@ -419,6 +433,21 @@ public class MainWindow extends GSFrame
         }
 
         return treeNode;
+    }
+
+    public void setModified()
+    {
+        modified = true;
+    }
+
+    public School getSchool()
+    {
+        return school;
+    }
+
+    public EntryWindow getFather()
+    {
+        return father;
     }
 
     public void refreshTree(GSComponentNode node)
@@ -632,6 +661,14 @@ public class MainWindow extends GSFrame
             Component exam2 = new Component("Exam2");
             exam.addComponentAndScale(exam2, 50);
         return root;
+    }
+
+    private void closeFrame()
+    {
+        father.refreshDropDowns();
+        father.setVisible(true);
+        dispose();
+
     }
 
     //public static void main(String[] args) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {

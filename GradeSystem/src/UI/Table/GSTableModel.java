@@ -41,6 +41,7 @@ public class GSTableModel extends DefaultTableModel
                 System.out.println(component.getName());
                 course.getGradeMap().putScore(student, new Score(value), component);
                 mainWindow.refreshTableNStatistic();
+                mainWindow.setModified();
             }
         });
     }
