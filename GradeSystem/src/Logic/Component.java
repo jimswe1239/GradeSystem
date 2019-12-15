@@ -1,6 +1,8 @@
 package Logic;
 //import java.util.ArrayList;
-import java.util.HashMap;
+
+//import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class Component implements java.io.Serializable{
 
@@ -8,7 +10,7 @@ public class Component implements java.io.Serializable{
 	
 	private Component parent; //if == null, then this is root
 	
-	public HashMap<Component,Double> children;
+	public LinkedHashMap<Component,Double> children;
 	
 	public boolean valid;
 	
@@ -18,7 +20,7 @@ public class Component implements java.io.Serializable{
 	
 	public Component(String n) {
 		name = n;
-		children = new HashMap<Component,Double>();
+		children = new LinkedHashMap<Component,Double>();
 		valid = true;
 		
 	}
@@ -26,7 +28,7 @@ public class Component implements java.io.Serializable{
 	public Component(String n, Component p) {
 		name = n;
 		parent = p;
-		children = new HashMap<Component,Double>();
+		children = new LinkedHashMap<Component,Double>();
 		if(isXPercent(100,children)) {
 			valid = true;
 		}
@@ -128,11 +130,11 @@ public class Component implements java.io.Serializable{
 		return sum;
 	}
 	
-	public HashMap<Component, Double> getChildren(){//use this to get the old values of all of the children, so you can display them as defaults when adding a new component and manually changing the old components. You should then make a keySet of the components in this HashMap, and create a new hashMap with all of the old keys, plus then new one, and use that set of keys, and the values that the user enters, to create a new hashmap to pass into changeAllChildren
+	public LinkedHashMap<Component, Double> getChildren(){//use this to get the old values of all of the children, so you can display them as defaults when adding a new component and manually changing the old components. You should then make a keySet of the components in this HashMap, and create a new hashMap with all of the old keys, plus then new one, and use that set of keys, and the values that the user enters, to create a new hashmap to pass into changeAllChildren
 		return children;
 	}
 	
-	public boolean changeAllChildren(HashMap<Component, Double> newChildren) {//when changing all children, you need to manually set the new values in the map
+	public boolean changeAllChildren(LinkedHashMap<Component, Double> newChildren) {//when changing all children, you need to manually set the new values in the map
 		//This function CAN BE USED to add a new child, if the new children hashMap contains a new child, then it will be added here.
 		//So, when using this function, create a new Component, call the getChildren method, and then add the new component to those children, then use this function.
 		if(isXPercent(100,newChildren)) {
@@ -144,7 +146,7 @@ public class Component implements java.io.Serializable{
 		return false;
 	}
 	
-	public static boolean isXPercent(double d, HashMap<Component, Double> newChildren){
+	public static boolean isXPercent(double d, LinkedHashMap<Component, Double> newChildren){
 		double total = 0;
 		for (Double childPercentage : newChildren.values()) {
 			total += childPercentage;

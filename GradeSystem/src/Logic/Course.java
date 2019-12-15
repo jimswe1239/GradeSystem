@@ -2,6 +2,7 @@ package Logic;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public class Course implements Comparable<Course> ,java.io.Serializable{
@@ -85,7 +86,7 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 		whereToAdd.addComponentAndScale(toAdd,0);
 	}
 	
-	public boolean changeAllChildren(Component toChangeChildrenOf, HashMap<Component, Double> newChildren) {
+	public boolean changeAllChildren(Component toChangeChildrenOf, LinkedHashMap<Component, Double> newChildren) {
 		return toChangeChildrenOf.changeAllChildren(newChildren);
 	}
 	
