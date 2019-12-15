@@ -687,8 +687,7 @@ class GSTreeCellRenderer extends DefaultTreeCellRenderer
         else
             {
                 c.setOpaque(true);
-            value = (GSComponentNode) value;
-            if (!((GSComponentNode) value).checkChildrenSumIs100())
+            if (!((GSComponentNode) value).isLeaf() && !((GSComponentNode) value).checkChildrenSumIs100())
             {
                 c.setForeground(getTextNonSelectionColor());
                 c.setBackground(Color.YELLOW);
