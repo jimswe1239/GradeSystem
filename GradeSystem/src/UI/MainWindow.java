@@ -142,6 +142,10 @@ public class MainWindow extends GSFrame
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             School temp=school.get();
+                            if(temp==null){
+                                new School().save();
+                                return;
+                            }
                             temp.getTotalTemplates().exportComponent(course.getRoot());
                             temp.save();
                         }
@@ -605,7 +609,7 @@ public class MainWindow extends GSFrame
                 }
                 else
                 {
-                    tableContent.append(finalScore);
+                    tableContent.append(finalScore + " (" + scoreToLetter(finalScore) + ")");
                 }
                 tableContent.println();
             }
@@ -614,7 +618,37 @@ public class MainWindow extends GSFrame
         return tableContent;
     }
 
-    private void refreshStatisticInfo(GSComponentNode node)
+    private String scoreToLetter(double finalScore) {
+		String ret = "";
+    	if(finalScore>=90) {
+			ret = "A";
+		}
+    	else if(finalScore>=80) {
+			ret = "B";
+		}
+    	else if(finalScore>=70) {
+			ret = "C";
+		}
+    	else if(finalScore>=60) {
+			ret = "D";
+		}
+    	else {
+    		ret = "F";
+    	}
+
+    	if(finalScore == 100) {
+    		
+    	}
+    	else if(finalScore%10>=7 && !ret.equals("A") && !ret.equals("F")) {
+    		ret = ret + "+";
+    	}
+    	else if(finalScore%10<=2 && !ret.equals("F")){
+    		ret = ret + "-";
+    	}
+		return ret;
+	}
+
+	private void refreshStatisticInfo(GSComponentNode node)
     {
         double average = 0;
         double median = 0;
