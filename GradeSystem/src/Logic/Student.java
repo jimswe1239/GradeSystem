@@ -49,7 +49,7 @@ public class Student implements Comparable<Student> ,java.io.Serializable{
 	}
 	
 	public boolean isMatch(String name) {
-		if(name.matches(this.name.getlName()+" "+this.name.getlName())) {
+		if(name.matches(this.name.getlName()+", "+this.name.getfName())) {
 			return true;
 		}
 		return false;
