@@ -3,6 +3,14 @@ import java.util.HashMap;
 
 public class Grade implements java.io.Serializable{//grade is a score map!
 	HashMap<Component,Score> sMap;
+	public HashMap<Component, Score> getsMap() {
+		return sMap;
+	}
+
+	public void setsMap(HashMap<Component, Score> sMap) {
+		this.sMap = sMap;
+	}
+
 	double endBonus;
 	
 	public Grade() {

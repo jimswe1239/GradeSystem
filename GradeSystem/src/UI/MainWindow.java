@@ -220,28 +220,7 @@ public class MainWindow extends GSFrame
             tablePanel = new JScrollPane();
             tablePanel.setViewportView(table);
 
-            table.addMouseListener(new MouseAdapter() {
-            	public void mouseClicked(MouseEvent e) {
-            		if(e.getButton()==MouseEvent.BUTTON3) {
-            			
-            			JPopupMenu menu = new JPopupMenu();
-            			JMenuItem addRow,addCol;
-            			menu.add(addRow = new JMenuItem("Add Student"));
-            			menu.show(table, e.getX(), e.getY());
-            			
-            			addRow.addActionListener(new ActionListener() {
-
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								// TODO Auto-generated method stub
-								AddStudent as = new AddStudent(course, MainWindow.this);
-								setEnabled(false);
-								as.setVisible(true);
-							}
-            			});
-            		}
-            	}
-            });
+            
             tablePanel.addMouseListener(new MouseAdapter() {
             	public void mouseClicked(MouseEvent e) {
             		if(e.getButton()==MouseEvent.BUTTON3) {
@@ -249,7 +228,7 @@ public class MainWindow extends GSFrame
             			JPopupMenu menu = new JPopupMenu();
             			JMenuItem addRow,addCol;
             			menu.add(addRow = new JMenuItem("Add Student"));
-            			menu.add(addCol = new JMenuItem("Drop Student"));
+            			
             			menu.show(tablePanel, e.getX(), e.getY());
             			
             			addRow.addActionListener(new ActionListener() {
@@ -261,21 +240,6 @@ public class MainWindow extends GSFrame
 								as.setVisible(true);
 							}
             				
-            			});
-            			
-            			addCol.addActionListener(new ActionListener() {
-
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								// TODO Auto-generated method stub
-								int row = table.getSelectedRow();
-								String name = (String)table.getValueAt(row, 0);
-								String sectionName = (String)table.getValueAt(row, 1);
-								
-								Section section = course.findSectionByStr(sectionName);
-								section.removeStudent(section.getStudentByFullName(name));
-								MainWindow.this.refreshTableNStatistic();
-							}
             			});
             		}
             	}
@@ -565,6 +529,8 @@ public class MainWindow extends GSFrame
         }
         table.getTableHeader().setUI(new GroupableTableHeaderUI());
 
+        addMenuOnTable(table);
+
         return table;
     }
 
@@ -759,6 +725,63 @@ public class MainWindow extends GSFrame
     //    MainWindow test = new MainWindow(initCourseForTest());
     //    test.setVisible(true);
     //}
+    public void addMenuOnTable(GSTable table) {
+    	table.addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent e) {
+        		if(e.getButton()==MouseEvent.BUTTON3) {
+        			
+        			JPopupMenu menu = new JPopupMenu();
+        			JMenuItem addRow,addCol,comment;
+        			menu.add(addRow = new JMenuItem("Add Student"));
+        			menu.add(addCol = new JMenuItem("Drop Student"));
+        			menu.add(comment = new JMenuItem("Modify Comment"));
+        			menu.show(table, e.getX(), e.getY());
+        			
+        			addRow.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							AddStudent as = new AddStudent(course, MainWindow.this);
+							setEnabled(false);
+							as.setVisible(true);
+						}
+        			});
+        			
+        			addCol.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							int row = table.getSelectedRow();
+							String name = (String)table.getValueAt(row, 1);
+							//String sectionName = (String)table.getValueAt(row, 0);
+							
+							//Section section = course.findSectionByStr(sectionName);
+                            Section section = table.getSection(row);
+							section.removeStudent(section.getStudentByFullName(name));
+							MainWindow.this.refreshTableNStatistic();
+						}
+        			});
+        			comment.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							int row = table.getSelectedRow();
+							int column = table.getSelectedColumn();
+							String name = (String)table.getValueAt(row, 1);
+							Component c = table.getLogicComponent(column);
+							Section section = table.getSection(row);
+							Student s = section.getStudentByFullName(name);
+							ViewComment viewComment = new ViewComment(c,s,course);
+							viewComment.setVisible(true);
+						}
+        			});
+        		}
+        	}
+        });
+    }
 }
 
 class GSTree extends JTree
@@ -820,6 +843,8 @@ class GSTreeCellRenderer extends DefaultTreeCellRenderer
         }
         return c;
     }
+    
+    
 }
 
 

@@ -9,6 +9,9 @@ import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import Logic.Component;
+import Logic.Course;
+import Logic.Section;
+import Logic.Student;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -22,12 +25,11 @@ import javax.swing.JButton;
 import javax.swing.tree.TreePath;
 import java.awt.Color;
 
-public class AddComponent extends JFrame {
+public class AddStudent extends JFrame {
 
 	private JPanel contentPane;
 	private JTextArea textArea;
 	private JTextArea textArea_1;
-	private JTextArea textArea_2;
 
 	/**
 	 * Launch the application.
@@ -48,7 +50,7 @@ public class AddComponent extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddComponent(GSComponentNode node, Component root, MainWindow mw) {
+	public AddStudent(Course course, MainWindow mw) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 504, 319);
 		contentPane = new JPanel();
@@ -61,50 +63,47 @@ public class AddComponent extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblAddComponent = new JLabel("Add a Component");
+		JLabel lblAddComponent = new JLabel("Add a Student");
 		//lblAddComponent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
 		lblAddComponent.setBounds(10, 10, 134, 21);
 		panel.add(lblAddComponent);
 		
 		textArea = new JTextArea();
-		textArea.setBounds(168, 42, 129, 21);
+		textArea.setBounds(168, 41, 129, 21);
 		panel.add(textArea);
 		textArea.setColumns(10);
 		
-		JLabel lblComponentName = new JLabel("Component Name");
+		JLabel lblComponentName = new JLabel("First Name");
 		//lblComponentName.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
-		lblComponentName.setBounds(40, 44, 104, 15);
+		lblComponentName.setBounds(40, 43, 104, 15);
 		panel.add(lblComponentName);
 		
 		textArea_1 = new JTextArea();
 		textArea_1.setColumns(10);
-		textArea_1.setBounds(168, 73, 129, 21);
+		textArea_1.setBounds(168, 108, 129, 21);
 		panel.add(textArea_1);
 		
-		JLabel lblScalepercentage = new JLabel("Scale (Percentage\r\n)");
+		JLabel lblScalepercentage = new JLabel("Section");
 		//lblScalepercentage.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
-		lblScalepercentage.setBounds(40, 75, 104, 15);
+		lblScalepercentage.setBounds(40, 110, 104, 15);
 		panel.add(lblScalepercentage);
 		
-		textArea_2 = new JTextArea();
-		textArea_2.setForeground(Color.WHITE);
+		JLabel lblLastName = new JLabel("Last Name");
+		lblLastName.setBounds(40, 74, 104, 15);
+		panel.add(lblLastName);
+		
+		JTextArea textArea_2 = new JTextArea();
 		textArea_2.setColumns(10);
-		textArea_2.setBounds(168, 104, 198, 80);
-		textArea_2.setLineWrap(true);
+		textArea_2.setBounds(168, 72, 129, 21);
 		panel.add(textArea_2);
 		
-		JLabel lblSpecialNote = new JLabel("Special Note");
-		lblSpecialNote.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
-		lblSpecialNote.setBounds(40, 106, 104, 15);
-		panel.add(lblSpecialNote);
-		
 		JButton btnNewButton = new JButton("OK");
-		btnNewButton.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
+		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNewButton.setBounds(73, 219, 97, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("cancel");
-		btnNewButton_1.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
+		btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 12));
 		btnNewButton_1.setBounds(289, 219, 97, 23);
 		contentPane.add(btnNewButton_1);
 		
@@ -113,30 +112,41 @@ public class AddComponent extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String componentName = textArea.getText();
-				String componentScaleStr = textArea_1.getText();
-				String specialNote = textArea_2.getText();
-				int percentage;
+				String firstName = textArea.getText();
+				String lastName = textArea_2.getText();
+				String studentSectionStr = textArea_1.getText();
+				int sectionNum;
+				Section s;
 				
 				try {
-					percentage = Integer.parseInt(componentScaleStr);
+					sectionNum = Integer.parseInt(studentSectionStr);
 				}
 				catch(NumberFormatException e1) {
-					JOptionPane.showMessageDialog(btnNewButton,"Incorrect format about the percentage!");
+					JOptionPane.showMessageDialog(btnNewButton,"Incorrect format about the Section!");
 					return;
 				}
 				//if OK
-				Component newComponent = new Component(componentName);
-				if(root.isComponentNameExist(newComponent)==true) {
-					JOptionPane.showMessageDialog(btnNewButton,"Name exists!");
-					return;
+				//check if the section exists
+				if((s=course.findSection(studentSectionStr))==null) {
+					course.setSectionsTo(sectionNum);
+					s=course.findSection(studentSectionStr);
 				}
-				root.addComponentAndScale(newComponent, percentage);
-				node.add(new GSComponentNode(newComponent));
-				JOptionPane.showMessageDialog(btnNewButton,"Add new component: "+componentName+" Succesfully!");
-				mw.refreshTree(node);
+				//add students
+				s.addStudent(new Student(firstName, lastName));
+				JOptionPane.showMessageDialog(btnNewButton,"Add new student: "+firstName+" "+lastName+" Succesfully!");
 				mw.refreshTableNStatistic();
-				AddComponent.this.setVisible(false);
+				
+				
+//				Component newComponent = new Component(componentName);
+//				if(root.isComponentNameExist(newComponent)==true) {
+//					JOptionPane.showMessageDialog(btnNewButton,"Name exists!");
+//					return;
+//				}
+//				root.addComponentAndScale(newComponent, percentage);
+//				node.add(new GSComponentNode(newComponent));
+//				JOptionPane.showMessageDialog(btnNewButton,"Add new component: "+componentName+" Succesfully!");
+				
+				AddStudent.this.setVisible(false);
 				mw.setModified();
 				dispose();
 			}
@@ -148,7 +158,7 @@ public class AddComponent extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				AddComponent.this.setVisible(false);
+				AddStudent.this.setVisible(false);
 				dispose();
 			}
 		});

@@ -68,11 +68,11 @@ public class GSTable extends JTable
         if(gridSplit==null){
             return y;
         }
-        // 当指定位置不在Table内时，返回－1
+        // 褰撴寚瀹氫綅缃笉鍦═able鍐呮椂锛岃繑鍥烇紞1
         if (y < 0)
             return y;
         int x = super.rowAtPoint(p);
-        // 获取指定位置可视单元格的列值
+        // 鑾峰彇鎸囧畾浣嶇疆鍙鍗曞厓鏍肩殑鍒楀��
         return gridSplit.visibleColCell(x, y);
 
     }
@@ -92,7 +92,7 @@ public class GSTable extends JTable
     @Override
     public boolean isCellEditable(int row, int col)
     {
-        if(col < 2)
+        if(col < 2 || col == getColumnCount() - 1)
         {
             return false;
         }
@@ -152,7 +152,25 @@ public class GSTable extends JTable
         return student;
     }
 
-    public Logic.Component getComponent(int column, GSComponentNode node)
+    public Section getSection(int row)
+    {
+        for(Section section : course.getSections())
+        {
+            int stuNum = section.getStudentList().size();
+            if(row < stuNum)
+            {
+                return section;
+            }
+            else
+            {
+                row = row - stuNum;
+            }
+        }
+
+        return null;
+    }
+
+    public Logic.Component getLogicComponent(int column)
     {
         column -= 2;
         Logic.Component component = null;
@@ -195,16 +213,16 @@ public class GSTable extends JTable
             return super.getCellRect(row, column, includeSpacing);
         }
 
-        int colCell = gridSplit.visibleColCell(row, column);// 指定单元格的可视单元格列值
-        int rowCell = gridSplit.visibleRowCell(row, column);// 指定单元格的可视单元格行值
+        int colCell = gridSplit.visibleColCell(row, column);// 鎸囧畾鍗曞厓鏍肩殑鍙鍗曞厓鏍煎垪鍊�
+        int rowCell = gridSplit.visibleRowCell(row, column);// 鎸囧畾鍗曞厓鏍肩殑鍙鍗曞厓鏍艰鍊�
 
         Rectangle rec = super.getCellRect(rowCell, colCell, includeSpacing);
 
-        // 如果指定单元格列宽不为1，累计出跨列单元格的宽度
+        // 濡傛灉鎸囧畾鍗曞厓鏍煎垪瀹戒笉涓�1锛岀疮璁″嚭璺ㄥ垪鍗曞厓鏍肩殑瀹藉害
         for (int i = 1; i < gridSplit.spanCol(rowCell, colCell); i++) {
             rec.width += getColumnModel().getColumn(colCell + i).getWidth();
         }
-        // 如果指定单元格行宽不为1，累计出跨行单元格的宽度
+        // 濡傛灉鎸囧畾鍗曞厓鏍艰瀹戒笉涓�1锛岀疮璁″嚭璺ㄨ鍗曞厓鏍肩殑瀹藉害
         for (int i = 1; i < gridSplit.spanRow(rowCell, colCell); i++) {
             rec.height += getRowHeight(rowCell + i);
         }
@@ -224,9 +242,9 @@ public class GSTable extends JTable
         int modelColumn = convertColumnIndexToModel(column);
         Component comp = super.prepareRenderer(renderer, row, column);
         if (!isRowSelected(modelRow)) {
-            if (modelColumn == 0)                   //此处加入条件判断
+            if (modelColumn == 0)                   //姝ゅ鍔犲叆鏉′欢鍒ゆ柇
                 comp.setBackground(new Color(238,238,238));
-            else                                                     //不符合条件的保持原表格样式
+            else                                                     //涓嶇鍚堟潯浠剁殑淇濇寔鍘熻〃鏍兼牱寮�
                 comp.setBackground(getBackground());
         }
         return comp;
