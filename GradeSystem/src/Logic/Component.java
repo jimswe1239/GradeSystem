@@ -55,7 +55,17 @@ public class Component implements java.io.Serializable{
 	}
 	***/
 
-
+	public boolean isComponentNameExist(Component toAdd) {
+		boolean isExist = false;
+		
+		for(Component c: children.keySet()) {
+			if(c.getName().matches(toAdd.getName())) {
+				isExist = true;
+			}
+		}
+		
+		return isExist;
+	}
 
 	public void addComponentAndScale(Component toAdd, double per) {//adds component and scales the other children according to the value added
 		toAdd.setParent(this);

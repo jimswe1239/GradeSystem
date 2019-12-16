@@ -226,9 +226,19 @@ public class MainWindow extends GSFrame
             			
             			JPopupMenu menu = new JPopupMenu();
             			JMenuItem addRow,addCol;
-            			menu.add(addRow = new JMenuItem("Add Row"));
-            			menu.add(addCol = new JMenuItem("Add Column"));
+            			menu.add(addRow = new JMenuItem("Add Student"));
             			menu.show(table, e.getX(), e.getY());
+            			
+            			addRow.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								AddStudent as = new AddStudent(course, MainWindow.this);
+								setEnabled(false);
+								as.setVisible(true);
+							}
+            			});
             		}
             	}
             });
@@ -238,9 +248,35 @@ public class MainWindow extends GSFrame
             			
             			JPopupMenu menu = new JPopupMenu();
             			JMenuItem addRow,addCol;
-            			menu.add(addRow = new JMenuItem("Add Row"));
-            			menu.add(addCol = new JMenuItem("Add Column"));
+            			menu.add(addRow = new JMenuItem("Add Student"));
+            			menu.add(addCol = new JMenuItem("Drop Student"));
             			menu.show(tablePanel, e.getX(), e.getY());
+            			
+            			addRow.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								AddStudent as = new AddStudent(course, MainWindow.this);
+								as.setVisible(true);
+							}
+            				
+            			});
+            			
+            			addCol.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								// TODO Auto-generated method stub
+								int row = table.getSelectedRow();
+								String name = (String)table.getValueAt(row, 0);
+								String sectionName = (String)table.getValueAt(row, 1);
+								
+								Section section = course.findSectionByStr(sectionName);
+								section.removeStudent(section.getStudentByFullName(name));
+								MainWindow.this.refreshTableNStatistic();
+							}
+            			});
             		}
             	}
             });
@@ -494,6 +530,7 @@ public class MainWindow extends GSFrame
         table.setMainWindow(this);
 
         TableColumnModel cm = table.getColumnModel();
+        
         ColumnGroup no = new ColumnGroup(" ");
         no.add(cm.getColumn(0));
         no.add(cm.getColumn(1));
