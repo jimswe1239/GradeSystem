@@ -72,5 +72,6 @@ class DSTableUI extends BasicTableUI
 //			System.out.println(area.x + " " + area.y + " " + area.width + " " + area.height);
 		}
 	}
-	
+
+
 }

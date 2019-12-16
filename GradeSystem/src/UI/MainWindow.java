@@ -744,7 +744,7 @@ public class MainWindow extends GSFrame
 							Component c = table.getLogicComponent(column);
 							Section section = table.getSection(row);
 							Student s = section.getStudentByFullName(name);
-							ViewComment viewComment = new ViewComment(c,s,course);
+							ViewComment viewComment = new ViewComment(c,s,course,self);
 							viewComment.setVisible(true);
 						}
         			});

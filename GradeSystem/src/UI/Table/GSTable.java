@@ -241,12 +241,28 @@ public class GSTable extends JTable
         int modelRow = convertRowIndexToModel(row);
         int modelColumn = convertColumnIndexToModel(column);
         Component comp = super.prepareRenderer(renderer, row, column);
+        Logic.Component component = getLogicComponent(column);
+        Student student = getStudent(row);
+        Score score = course.getGradeMap().getGrade(student).getsMap().get(component);
+        String comment = "";
+        if(score != null)
+        {
+            comment = score.getComment();
+        }
         if (!isRowSelected(modelRow)) {
-            if (modelColumn == 0)                   //姝ゅ鍔犲叆鏉′欢鍒ゆ柇
+            if (modelColumn == 0)
                 comp.setBackground(new Color(238,238,238));
-            else                                                     //涓嶇鍚堟潯浠剁殑淇濇寔鍘熻〃鏍兼牱寮�
-                comp.setBackground(getBackground());
+            else
+                if(comment.equals(""))
+                {
+                    comp.setBackground(getBackground());
+                }
+                else
+                {
+                    comp.setBackground(Color.yellow);
+                }
         }
         return comp;
     }
+
 }

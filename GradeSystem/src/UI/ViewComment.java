@@ -45,7 +45,7 @@ public class ViewComment extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ViewComment(Component c, Student s, Course course) {
+	public ViewComment(Component c, Student s, Course course, MainWindow mw) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 309);
 		contentPane = new JPanel();
@@ -82,16 +82,17 @@ public class ViewComment extends JFrame {
 		contentPane.add(comment);
 		
 		JButton save = new JButton("Save");
-		String comment_str = textArea_comment.getText();
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				GradeMap gm = course.getGradeMap();
 				Grade g = gm.getGrade(s);
 				Score score = g.getsMap().get(c);
+				String comment_str = textArea_comment.getText();
 				score.setComment(comment_str);
 				
 				JOptionPane.showMessageDialog(save,"Modify comment Succesfully!");
 				ViewComment.this.setVisible(false);
+				mw.refreshTableNStatistic();
 				dispose();
 			}
 		});
