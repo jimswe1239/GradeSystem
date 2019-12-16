@@ -701,9 +701,10 @@ public class MainWindow extends GSFrame
         		if(e.getButton()==MouseEvent.BUTTON3) {
         			
         			JPopupMenu menu = new JPopupMenu();
-        			JMenuItem addRow,addCol;
+        			JMenuItem addRow,addCol,comment;
         			menu.add(addRow = new JMenuItem("Add Student"));
         			menu.add(addCol = new JMenuItem("Drop Student"));
+        			menu.add(comment = new JMenuItem("Modify Comment"));
         			menu.show(table, e.getX(), e.getY());
         			
         			addRow.addActionListener(new ActionListener() {
@@ -730,6 +731,20 @@ public class MainWindow extends GSFrame
                             Section section = table.getSection(row);
 							section.removeStudent(section.getStudentByFullName(name));
 							MainWindow.this.refreshTableNStatistic();
+						}
+        			});
+        			comment.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							// TODO Auto-generated method stub
+							int row = table.getSelectedRow();
+							int column = table.getSelectedColumn();
+							String name = (String)table.getValueAt(row, 1);
+							Component c = table.getLogicComponent(column);
+							Section section = table.getSection(row);
+							Student s = section.getStudentByFullName(name);
+							ViewComment viewComment = new ViewComment(c,s,course);
 						}
         			});
         		}
