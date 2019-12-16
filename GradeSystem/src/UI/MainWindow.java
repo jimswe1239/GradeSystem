@@ -529,6 +529,8 @@ public class MainWindow extends GSFrame
         }
         table.getTableHeader().setUI(new GroupableTableHeaderUI());
 
+        addMenuOnTable(table);
+
         return table;
     }
 
@@ -721,8 +723,8 @@ public class MainWindow extends GSFrame
 						public void actionPerformed(ActionEvent e) {
 							// TODO Auto-generated method stub
 							int row = table.getSelectedRow();
-							String name = (String)table.getValueAt(row, 0);
-							String sectionName = (String)table.getValueAt(row, 1);
+							String name = (String)table.getValueAt(row, 1);
+							String sectionName = (String)table.getValueAt(row, 0);
 							
 							Section section = course.findSectionByStr(sectionName);
 							section.removeStudent(section.getStudentByFullName(name));

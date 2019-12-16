@@ -92,7 +92,7 @@ public class GSTable extends JTable
     @Override
     public boolean isCellEditable(int row, int col)
     {
-        if(col < 2)
+        if(col < 2 || col == getColumnCount() - 1)
         {
             return false;
         }
