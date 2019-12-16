@@ -99,12 +99,12 @@ public class AddComponent extends JFrame {
 		panel.add(lblSpecialNote);
 		
 		JButton btnNewButton = new JButton("OK");
-		btnNewButton.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnNewButton.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
 		btnNewButton.setBounds(73, 219, 97, 23);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("cancel");
-		btnNewButton_1.setFont(new Font("Verdana", Font.PLAIN, 12));
+		btnNewButton_1.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
 		btnNewButton_1.setBounds(289, 219, 97, 23);
 		contentPane.add(btnNewButton_1);
 		
