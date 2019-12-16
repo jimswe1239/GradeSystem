@@ -142,6 +142,10 @@ public class MainWindow extends GSFrame
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             School temp=school.get();
+                            if(temp==null){
+                                new School().save();
+                                return;
+                            }
                             temp.getTotalTemplates().exportComponent(course.getRoot());
                             temp.save();
                         }
