@@ -170,7 +170,7 @@ public class GSTable extends JTable
         return null;
     }
 
-    public Logic.Component getComponent(int column, GSComponentNode node)
+    public Logic.Component getLogicComponent(int column)
     {
         column -= 2;
         Logic.Component component = null;
