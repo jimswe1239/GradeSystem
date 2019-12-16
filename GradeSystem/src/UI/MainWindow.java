@@ -148,6 +148,7 @@ public class MainWindow extends GSFrame
                             }
                             temp.getTotalTemplates().exportComponent(course.getRoot());
                             temp.save();
+                            school.getTotalTemplates().get().put(course.getRoot().getName(),course.getRoot());
                         }
                     });
             		//add the function of add
@@ -406,7 +407,7 @@ public class MainWindow extends GSFrame
                     @Override
                     public void actionPerformed(ActionEvent e)
                     {
-
+                        school.addCourse(course);
                         school.save();
                         refreshTableNStatistic();
                     }

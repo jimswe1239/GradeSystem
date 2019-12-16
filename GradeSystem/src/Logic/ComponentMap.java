@@ -9,7 +9,9 @@ public class ComponentMap implements java.io.Serializable{
 	public ComponentMap(){
 		cMap = new HashMap<String,Component>();
 	}
-	
+	public HashMap<String,Component> get(){
+		return cMap;
+	}
 	public void exportComponent(Component c) {
 		Component deepCopy = c.deepCopy();
 		cMap.put(deepCopy.name, deepCopy);
