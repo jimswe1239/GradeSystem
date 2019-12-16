@@ -749,6 +749,7 @@ public class MainWindow extends GSFrame
 							Section section = table.getSection(row);
 							Student s = section.getStudentByFullName(name);
 							ViewComment viewComment = new ViewComment(c,s,course);
+							viewComment.setVisible(true);
 						}
         			});
         		}

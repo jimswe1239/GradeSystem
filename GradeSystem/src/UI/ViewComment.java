@@ -70,6 +70,11 @@ public class ViewComment extends JFrame {
 		GradeMap gm = course.getGradeMap();
 		Grade g = gm.getGrade(s);
 		Score score = g.getsMap().get(c);
+		if(score == null)
+		{
+			score = new Score();
+			g.getsMap().put(c, score);
+		}
 		textArea_comment.setText(score.getComment());
 		
 		JLabel comment = new JLabel("Grader's comments");
