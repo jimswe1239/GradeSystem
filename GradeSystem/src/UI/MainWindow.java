@@ -141,8 +141,9 @@ public class MainWindow extends GSFrame
             		category.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            school.getTotalTemplates().exportComponent(course.getRoot());
-                            school.save();
+                            School temp=school.get();
+                            temp.getTotalTemplates().exportComponent(course.getRoot());
+                            temp.save();
                         }
                     });
             		//add the function of add
@@ -196,7 +197,6 @@ public class MainWindow extends GSFrame
 							setEnabled(false);
 							ccs.setVisible(true);
 						}
-            			
             		});
             	}
             });

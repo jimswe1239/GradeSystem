@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class RenameWindow extends JFrame
 {
@@ -19,6 +21,14 @@ public class RenameWindow extends JFrame
     public RenameWindow(MainWindow father, GSComponentNode node)
     {
         this.father = father;
+        addWindowListener(new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+                closeFrame();
+            }
+        });
         Logic.Component component = (Logic.Component)node.getUserObject();
         oldNameText.setText(component.getName());
         oldNameText.setEditable(false);
@@ -100,5 +110,11 @@ public class RenameWindow extends JFrame
         pack();
         setResizable(false);
         setLocationRelativeTo(null);
+    }
+
+    private void closeFrame()
+    {
+        father.setEnabled(true);
+        dispose();
     }
 }
