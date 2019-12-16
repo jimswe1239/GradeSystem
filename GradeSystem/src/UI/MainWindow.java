@@ -121,8 +121,8 @@ public class MainWindow extends GSFrame
     				JMenuItem add,delete,changeScale;
     				JMenuItem category, template;
     				JMenu m = new JMenu("Save as");
-    				category = new JMenuItem("Category");
-    				m.add(category = new JMenuItem("Category"));
+    				category = new JMenuItem("Template");
+    				m.add(category = new JMenuItem("Template"));
     				menu.add(add = new JMenuItem("Add"));
     	            menu.add(delete = new JMenuItem("Delete"));  
     	            menu.add(changeScale = new JMenuItem("Change scale"));
@@ -137,7 +137,13 @@ public class MainWindow extends GSFrame
             	            menu.show(tree, e.getX(), e.getY());    
             			}
             		}
-            		
+            		category.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            school.getTotalTemplates().exportComponent(course.getRoot());
+                            school.save();
+                        }
+                    });
             		//add the function of add
             		add.addActionListener(new ActionListener() {
 
