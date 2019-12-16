@@ -118,13 +118,14 @@ public class MainWindow extends GSFrame
             tree.addMouseListener(new MouseAdapter() {
             	public void mouseClicked(MouseEvent e) {
             		JPopupMenu menu = new JPopupMenu();
-    				JMenuItem add,delete,changeScale;
+    				JMenuItem add,delete,changeScale,rename;
     				JMenuItem category, template;
     				JMenu m = new JMenu("Save as");
     				category = new JMenuItem("Template");
     				m.add(category = new JMenuItem("Template"));
     				menu.add(add = new JMenuItem("Add"));
-    	            menu.add(delete = new JMenuItem("Delete"));  
+    	            menu.add(delete = new JMenuItem("Delete"));
+    	            menu.add(rename = new JMenuItem("Rename"));
     	            menu.add(changeScale = new JMenuItem("Change scale"));
     	            menu.add(m);
     				
@@ -146,7 +147,6 @@ public class MainWindow extends GSFrame
                     });
             		//add the function of add
             		add.addActionListener(new ActionListener() {
-
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							// TODO Auto-generated method stub
@@ -170,11 +170,21 @@ public class MainWindow extends GSFrame
 							DefaultTreeModel tm = (DefaultTreeModel)tree.getModel();
 							tm.removeNodeFromParent(node);
 							refreshTree(parentNode);
+                            modified = true;
 //							tree.setSelectionPath(new TreePath(parentNode));
 //							tree.updateUI();
 						}
             			
             		});
+            		rename.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
+                            RenameWindow renameWindow = new RenameWindow(self, node);
+                            setEnabled(false);
+                            renameWindow.setVisible(true);
+                        }
+                    });
             		changeScale.addActionListener(new ActionListener() {
 
 						@Override
@@ -183,6 +193,7 @@ public class MainWindow extends GSFrame
 							GSComponentNode node = (GSComponentNode) tree.getLastSelectedPathComponent();
 							Component toChange = (Component)node.getUserObject();
 							ChangeComponentScale ccs = new ChangeComponentScale(node, toChange, MainWindow.this);
+							setEnabled(false);
 							ccs.setVisible(true);
 						}
             			

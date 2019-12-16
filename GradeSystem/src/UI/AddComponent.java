@@ -49,7 +49,7 @@ public class AddComponent extends JFrame {
 	 * Create the frame.
 	 */
 	public AddComponent(GSComponentNode node, Component root, MainWindow mw) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 504, 319);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -62,7 +62,7 @@ public class AddComponent extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel lblAddComponent = new JLabel("Add a Component");
-		lblAddComponent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
+		//lblAddComponent.setFont(new Font("Yu Gothic UI Semibold", Font.PLAIN, 14));
 		lblAddComponent.setBounds(10, 10, 134, 21);
 		panel.add(lblAddComponent);
 		
@@ -72,7 +72,7 @@ public class AddComponent extends JFrame {
 		textArea.setColumns(10);
 		
 		JLabel lblComponentName = new JLabel("Component Name");
-		lblComponentName.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
+		//lblComponentName.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
 		lblComponentName.setBounds(40, 44, 104, 15);
 		panel.add(lblComponentName);
 		
@@ -82,7 +82,7 @@ public class AddComponent extends JFrame {
 		panel.add(textArea_1);
 		
 		JLabel lblScalepercentage = new JLabel("Scale (Percentage\r\n)");
-		lblScalepercentage.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
+		//lblScalepercentage.setFont(new Font("Yu Gothic UI Light", Font.PLAIN, 12));
 		lblScalepercentage.setBounds(40, 75, 104, 15);
 		panel.add(lblScalepercentage);
 		
@@ -133,6 +133,7 @@ public class AddComponent extends JFrame {
 				mw.refreshTree(node);
 				mw.refreshTableNStatistic();
 				AddComponent.this.setVisible(false);
+				mw.setModified();
 				dispose();
 			}
 			

@@ -15,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ChangeComponentScale extends JFrame {
 
@@ -41,12 +43,21 @@ public class ChangeComponentScale extends JFrame {
 	 * Create the frame.
 	 */
 	public ChangeComponentScale(GSComponentNode node, Component root, MainWindow mw) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 335, 214);
+		addWindowListener(new WindowAdapter()
+		{
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				closeFrame(mw);
+			}
+		});
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
 		
 		JLabel lblNewLabel = new JLabel("Old Scale");
 		lblNewLabel.setBounds(36, 28, 73, 15);
@@ -82,6 +93,8 @@ public class ChangeComponentScale extends JFrame {
 				mw.refreshTree(node);
 				mw.refreshTableNStatistic();
 				ChangeComponentScale.this.setVisible(false);
+				mw.setEnabled(true);
+				mw.setModified();
 				dispose();
 			}
 		});
@@ -95,10 +108,17 @@ public class ChangeComponentScale extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				ChangeComponentScale.this.setVisible(false);
+				mw.setEnabled(true);
 				dispose();
 			}
 		});
 		btnNewButton_1.setBounds(168, 123, 97, 23);
 		contentPane.add(btnNewButton_1);
+	}
+
+	private void closeFrame(MainWindow mw)
+	{
+		mw.setEnabled(true);
+		dispose();
 	}
 }
