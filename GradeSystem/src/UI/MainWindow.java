@@ -724,9 +724,10 @@ public class MainWindow extends GSFrame
 							// TODO Auto-generated method stub
 							int row = table.getSelectedRow();
 							String name = (String)table.getValueAt(row, 1);
-							String sectionName = (String)table.getValueAt(row, 0);
+							//String sectionName = (String)table.getValueAt(row, 0);
 							
-							Section section = course.findSectionByStr(sectionName);
+							//Section section = course.findSectionByStr(sectionName);
+                            Section section = table.getSection(row);
 							section.removeStudent(section.getStudentByFullName(name));
 							MainWindow.this.refreshTableNStatistic();
 						}

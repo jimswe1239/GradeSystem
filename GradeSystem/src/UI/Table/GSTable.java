@@ -152,6 +152,24 @@ public class GSTable extends JTable
         return student;
     }
 
+    public Section getSection(int row)
+    {
+        for(Section section : course.getSections())
+        {
+            int stuNum = section.getStudentList().size();
+            if(row < stuNum)
+            {
+                return section;
+            }
+            else
+            {
+                row = row - stuNum;
+            }
+        }
+
+        return null;
+    }
+
     public Logic.Component getComponent(int column, GSComponentNode node)
     {
         column -= 2;
