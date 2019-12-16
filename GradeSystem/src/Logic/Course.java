@@ -64,6 +64,16 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 			currentSectionNumber++;
 		}
 	}
+	public void setSectionsTo(int numOfSections) {
+		if(currentSectionNumber-1>=numOfSections) {
+			return;
+		}
+		else {
+			for(int x=currentSectionNumber-1;x<numOfSections;x++) {
+				addSection();
+			}
+		}
+	}
 	
 	public void addSection() {
 		sections.add(new Section("Section "+currentSectionNumber));
@@ -76,6 +86,26 @@ public class Course implements Comparable<Course> ,java.io.Serializable{
 			return true;
 		}
 		return false;
+	}
+	
+	public Section findSection(String num) {
+		String name = "Section "+num;
+		for(Section s: sections) {
+			if(s.name.matches(name)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
+	public Section findSectionByStr(String sectionName) {
+		String name = sectionName;
+		for(Section s: sections) {
+			if(s.name.matches(name)) {
+				return s;
+			}
+		}
+		return null;
 	}
 	
 	public void addComponentAndScale(Component toAdd, Component whereToAdd, double percentage) {

@@ -47,4 +47,11 @@ public class Student implements Comparable<Student> ,java.io.Serializable{
 		Student copy = new Student(name.deepCopy());
 		return copy;
 	}
+	
+	public boolean isMatch(String name) {
+		if(name.matches(this.name.getlName()+" "+this.name.getlName())) {
+			return true;
+		}
+		return false;
+	}
 }

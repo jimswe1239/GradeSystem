@@ -23,6 +23,15 @@ public class Section implements java.io.Serializable{//A section is simply a col
 		
 	}
 	
+	public Student getStudentByFullName(String fullName) {
+		for(Student s: students) {
+			if(s.isMatch(fullName)) {
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public ArrayList<Student> getStudentList() {
 		return students;
 	}

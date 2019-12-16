@@ -127,6 +127,10 @@ public class AddComponent extends JFrame {
 				}
 				//if OK
 				Component newComponent = new Component(componentName);
+				if(root.isComponentNameExist(newComponent)==true) {
+					JOptionPane.showMessageDialog(btnNewButton,"Name exists!");
+					return;
+				}
 				root.addComponentAndScale(newComponent, percentage);
 				node.add(new GSComponentNode(newComponent));
 				JOptionPane.showMessageDialog(btnNewButton,"Add new component: "+componentName+" Succesfully!");

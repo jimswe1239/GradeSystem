@@ -5,6 +5,14 @@ public class Name implements java.io.Serializable{//the name of a student
 	private String mName;
 	private String lName;
 	
+	public String getfName() {
+		return fName;
+	}
+
+	public String getlName() {
+		return lName;
+	}
+
 	public Name(String f, String l) {
 		fName = f;
 		mName = "";
