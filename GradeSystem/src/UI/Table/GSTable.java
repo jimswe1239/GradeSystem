@@ -243,12 +243,16 @@ public class GSTable extends JTable
         Component comp = super.prepareRenderer(renderer, row, column);
         Logic.Component component = getLogicComponent(column);
         Student student = getStudent(row);
-        Score score = course.getGradeMap().getGrade(student).getsMap().get(component);
         String comment = "";
-        if(score != null)
+        if(student != null)
         {
-            comment = score.getComment();
+            Score score = course.getGradeMap().getGrade(student).getsMap().get(component);
+            if(score != null)
+            {
+                comment = score.getComment();
+            }
         }
+
         if (!isRowSelected(modelRow)) {
             if (modelColumn == 0)
                 comp.setBackground(new Color(238,238,238));

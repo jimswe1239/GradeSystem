@@ -62,6 +62,7 @@ public class ChangeComponentScale extends JFrame {
 		JLabel lblNewLabel = new JLabel("Old Scale");
 		lblNewLabel.setBounds(36, 28, 73, 15);
 		contentPane.add(lblNewLabel);
+
 		
 		JLabel lblNewScale = new JLabel("New Scale");
 		lblNewScale.setBounds(36, 64, 73, 15);
@@ -70,6 +71,7 @@ public class ChangeComponentScale extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setBounds(150, 28, 58, 15);
 		contentPane.add(lblNewLabel_1);
+		lblNewLabel_1.setText(Double.toString(root.getPercentage()));
 		
 		textField = new JTextField();
 		textField.setBounds(150, 61, 66, 21);

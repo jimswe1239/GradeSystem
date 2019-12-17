@@ -14,6 +14,8 @@ import javax.swing.tree.TreePath;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -409,6 +411,7 @@ public class MainWindow extends GSFrame
                     {
                         school.addCourse(course);
                         school.save();
+                        modified = false;
                         refreshTableNStatistic();
                     }
                 });
@@ -666,10 +669,9 @@ public class MainWindow extends GSFrame
             median = 0;
             standardDeviation = 0;
         }
-
-        averageField.setText(String.valueOf(average));
-        medianField.setText(String.valueOf(median));
-        standardDeviationField.setText(String.valueOf(standardDeviation));
+        averageField.setText(String.format("%.2f", average).toString());
+        medianField.setText(String.format("%.2f", median).toString());
+        standardDeviationField.setText(String.format("%.2f", standardDeviation).toString());
     }
 
     private ColumnGroup getColumnGroup(GSComponentNode node, TableColumnModel cm, int[] columnIndex)

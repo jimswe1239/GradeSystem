@@ -132,7 +132,8 @@ public class AddStudent extends JFrame {
 					s=course.findSection(studentSectionStr);
 				}
 				//add students
-				s.addStudent(new Student(firstName, lastName));
+				course.addStudent(new Student(firstName, lastName), s);
+				//s.addStudent(new Student(firstName, lastName));
 				JOptionPane.showMessageDialog(btnNewButton,"Add new student: "+firstName+" "+lastName+" Succesfully!");
 				mw.refreshTableNStatistic();
 				
@@ -148,6 +149,7 @@ public class AddStudent extends JFrame {
 				
 				AddStudent.this.setVisible(false);
 				mw.setModified();
+				mw.setEnabled(true);
 				dispose();
 			}
 			

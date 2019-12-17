@@ -127,7 +127,8 @@ public class Component implements java.io.Serializable{
 				children.replace(child, newPer);
 			}
 			else if(getSumScaleOfChildren()>100) {
-				children.replace(child, (children.get(child) * decimalTotal));
+//				children.replace(child, (children.get(child) * decimalTotal));
+				children.replace(child, children.get(child));
 			}
 		}
 	}
